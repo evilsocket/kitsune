@@ -1,0 +1,852 @@
+{
+  "avg_hashtags_per_post": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": 0.02353527014606266,
+    "loss": 0.02353526546000878
+  },
+  "avg_reply_entropy": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": 0.03187549010109125,
+    "loss": 0.03187549538239376
+  },
+  "avg_reply_length": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.009053074164431962,
+    "loss": 0.00905309060461218
+  },
+  "avg_retweet_entropy": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": 0.021990816935513413,
+    "loss": 0.021990820655587662
+  },
+  "avg_retweet_length": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": 0.02620388528844053,
+    "loss": 0.026203889035336325
+  },
+  "avg_tweet_entropy": {
+    "bin_accuracy": 0.012422360248447117,
+    "binary_crossentropy": 0.023320870752511658,
+    "loss": 0.02332087397367133
+  },
+  "avg_tweet_length": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": 0.04958656108262477,
+    "loss": 0.04958656789468868
+  },
+  "contributors_enabled": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0,
+    "loss": 0.0
+  },
+  "days_since_creation": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": 0.03681891107793922,
+    "loss": 0.03681891716391961
+  },
+  "default_profile": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0006529775551130657,
+    "loss": 0.0006529767390178465
+  },
+  "default_profile_image": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 7.996364731774341e-05,
+    "loss": 7.996240758006978e-05
+  },
+  "favourites_count": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": -0.009556712752265661,
+    "loss": -0.009556708973109368
+  },
+  "followers_count": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0001213943228543235,
+    "loss": 0.00012140446313604891
+  },
+  "followers_to_friends_ratio": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 9.897654362767128e-10,
+    "loss": 1.1846885916710903e-08
+  },
+  "friends_count": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 8.124906917428287e-06,
+    "loss": 8.13819745681954e-06
+  },
+  "geo_enabled": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": 0.036824729256610955,
+    "loss": 0.03682474193296259
+  },
+  "has_description": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": 0.06323951987746335,
+    "loss": 0.06323953239418012
+  },
+  "has_extended_profile": {
+    "bin_accuracy": 0.009316770186335366,
+    "binary_crossentropy": -0.053765371684560914,
+    "loss": -0.0537653667005035
+  },
+  "has_lang": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0,
+    "loss": 0.0
+  },
+  "has_location": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": 0.0472998312930174,
+    "loss": 0.04729983122059089
+  },
+  "has_time_zone": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0,
+    "loss": 0.0
+  },
+  "has_url": {
+    "bin_accuracy": -0.015527950310559091,
+    "binary_crossentropy": 0.060198668136856814,
+    "loss": 0.060198681905905826
+  },
+  "has_utc_offset": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0,
+    "loss": 0.0
+  },
+  "is_translation_enabled": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0016772536647466085,
+    "loss": 0.0016772532314987543
+  },
+  "is_translator": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0,
+    "loss": 0.0
+  },
+  "listed_count": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": 0.009114017109466466,
+    "loss": 0.009114025588731589
+  },
+  "max_reply_entropy": {
+    "bin_accuracy": -0.009316770186335477,
+    "binary_crossentropy": 0.05078297552797195,
+    "loss": 0.05078297431193152
+  },
+  "max_reply_length": {
+    "bin_accuracy": 0.006211180124223503,
+    "binary_crossentropy": 0.003164007678415931,
+    "loss": 0.0031640142931238513
+  },
+  "max_retweet_entropy": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": 0.004648958609524495,
+    "loss": 0.004648960716096884
+  },
+  "max_retweet_length": {
+    "bin_accuracy": -0.006211180124223614,
+    "binary_crossentropy": 0.026871223463729443,
+    "loss": 0.02687122327454894
+  },
+  "max_tweet_entropy": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": 0.012000049937628543,
+    "loss": 0.012000059494922222
+  },
+  "max_tweet_length": {
+    "bin_accuracy": 0.009316770186335366,
+    "binary_crossentropy": 0.03822973197508778,
+    "loss": 0.03822974001653262
+  },
+  "min_reply_entropy": {
+    "bin_accuracy": 0.006211180124223503,
+    "binary_crossentropy": 0.0012849815213621107,
+    "loss": 0.0012849807473165609
+  },
+  "min_reply_length": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.0012391564600540417,
+    "loss": -0.0012391440350539296
+  },
+  "min_retweet_entropy": {
+    "bin_accuracy": -0.009316770186335477,
+    "binary_crossentropy": 0.025624080785055514,
+    "loss": 0.025624093495494438
+  },
+  "min_retweet_length": {
+    "bin_accuracy": -0.006211180124223614,
+    "binary_crossentropy": 0.028881361852673593,
+    "loss": 0.02888136923382556
+  },
+  "min_tweet_entropy": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.016384050024898816,
+    "loss": -0.016384051933375582
+  },
+  "min_tweet_length": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.014751218171680902,
+    "loss": -0.014751218386596043
+  },
+  "profile_use_background_image": {
+    "bin_accuracy": -0.021739130434782705,
+    "binary_crossentropy": 0.05946288713739467,
+    "loss": 0.05946288783658549
+  },
+  "protected": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0,
+    "loss": 0.0
+  },
+  "replies_count": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": 0.005379276215751766,
+    "loss": 0.005379281683553061
+  },
+  "replies_per_hour_of_day_0": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": 0.004492677220235303,
+    "loss": 0.004492685898721954
+  },
+  "replies_per_hour_of_day_1": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": 0.0026668902614036816,
+    "loss": 0.002666894450598617
+  },
+  "replies_per_hour_of_day_10": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.006288128885176519,
+    "loss": -0.006288117642358232
+  },
+  "replies_per_hour_of_day_11": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": 0.004252386970544142,
+    "loss": 0.004252391549185941
+  },
+  "replies_per_hour_of_day_12": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.010221634908567312,
+    "loss": 0.010221638543218947
+  },
+  "replies_per_hour_of_day_13": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.015531591023250468,
+    "loss": 0.015531605312033847
+  },
+  "replies_per_hour_of_day_14": {
+    "bin_accuracy": 0.006211180124223503,
+    "binary_crossentropy": -0.005774380836065157,
+    "loss": -0.005774370973108345
+  },
+  "replies_per_hour_of_day_15": {
+    "bin_accuracy": 0.006211180124223503,
+    "binary_crossentropy": -0.004088985620710944,
+    "loss": -0.004088983674365915
+  },
+  "replies_per_hour_of_day_16": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": 0.005853719124451873,
+    "loss": 0.005853728321814744
+  },
+  "replies_per_hour_of_day_17": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": 0.007713455377559131,
+    "loss": 0.007713468242089572
+  },
+  "replies_per_hour_of_day_18": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": 0.00018462779597935852,
+    "loss": 0.0001846344574638059
+  },
+  "replies_per_hour_of_day_19": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.009503726963856096,
+    "loss": 0.009503734413742637
+  },
+  "replies_per_hour_of_day_2": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": 0.0016358637802282305,
+    "loss": 0.0016358658173902252
+  },
+  "replies_per_hour_of_day_20": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.005019679474692534,
+    "loss": 0.005019685814608321
+  },
+  "replies_per_hour_of_day_21": {
+    "bin_accuracy": -0.006211180124223614,
+    "binary_crossentropy": 0.016025895725551742,
+    "loss": 0.016025905769248894
+  },
+  "replies_per_hour_of_day_22": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.00475260445029646,
+    "loss": 0.004752613384253479
+  },
+  "replies_per_hour_of_day_23": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0017059073347714948,
+    "loss": 0.0017059160199779932
+  },
+  "replies_per_hour_of_day_3": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.0007213151257576822,
+    "loss": -0.0007213122494842683
+  },
+  "replies_per_hour_of_day_4": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.0009026611978657229,
+    "loss": -0.0009026561591843618
+  },
+  "replies_per_hour_of_day_5": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.004398063370537081,
+    "loss": 0.0043980612460037816
+  },
+  "replies_per_hour_of_day_6": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.005155118889952404,
+    "loss": 0.005155128461557523
+  },
+  "replies_per_hour_of_day_7": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.0015035074805455073,
+    "loss": -0.001503508323977082
+  },
+  "replies_per_hour_of_day_8": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": 0.012575404219839603,
+    "loss": 0.012575404064857076
+  },
+  "replies_per_hour_of_day_9": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0004659043215256009,
+    "loss": 0.0004659087703742515
+  },
+  "replies_per_month_1": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": 0.0004577556951643469,
+    "loss": 0.00045775840787784516
+  },
+  "replies_per_month_10": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": 0.004689163184017409,
+    "loss": 0.004689166825611768
+  },
+  "replies_per_month_11": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0019677617122433044,
+    "loss": 0.0019677718291463975
+  },
+  "replies_per_month_12": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0007173567830625338,
+    "loss": 0.0007173672885350535
+  },
+  "replies_per_month_2": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.0005216710338201425,
+    "loss": -0.0005216584338442187
+  },
+  "replies_per_month_3": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 5.2819471351134295e-05,
+    "loss": 5.282626504668486e-05
+  },
+  "replies_per_month_4": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": 0.0031846512382018577,
+    "loss": 0.0031846612981109856
+  },
+  "replies_per_month_5": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": 0.003472018422423978,
+    "loss": 0.0034720293298270977
+  },
+  "replies_per_month_6": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": 0.004479507301265062,
+    "loss": 0.004479504630015868
+  },
+  "replies_per_month_7": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": 0.009701211018509681,
+    "loss": 0.009701217999045497
+  },
+  "replies_per_month_8": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": -0.0028556332184674627,
+    "loss": -0.002855624754837971
+  },
+  "replies_per_month_9": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.016163022741425587,
+    "loss": -0.016163018138743712
+  },
+  "replies_per_weekday_23": {
+    "bin_accuracy": -0.009316770186335477,
+    "binary_crossentropy": 0.024525376740650695,
+    "loss": 0.02452538232463669
+  },
+  "retweets_average_reaction_time": {
+    "bin_accuracy": 0.006211180124223503,
+    "binary_crossentropy": 0.017673835996185994,
+    "loss": 0.017673832352811114
+  },
+  "retweets_count": {
+    "bin_accuracy": 0.006211180124223503,
+    "binary_crossentropy": -0.017096113553255743,
+    "loss": -0.017096111655050178
+  },
+  "retweets_per_hour_of_day_0": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": 0.000904999473215401,
+    "loss": 0.0009050003270277274
+  },
+  "retweets_per_hour_of_day_1": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": 0.0009167740878612551,
+    "loss": 0.0009167776124910376
+  },
+  "retweets_per_hour_of_day_10": {
+    "bin_accuracy": 0.006211180124223503,
+    "binary_crossentropy": -0.008788968122509538,
+    "loss": -0.008788956271380377
+  },
+  "retweets_per_hour_of_day_11": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.004513661394281415,
+    "loss": 0.004513668370728169
+  },
+  "retweets_per_hour_of_day_12": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0009646190845414016,
+    "loss": 0.0009646207290869291
+  },
+  "retweets_per_hour_of_day_13": {
+    "bin_accuracy": 0.006211180124223503,
+    "binary_crossentropy": -0.003394712616094947,
+    "loss": -0.0033947082861147393
+  },
+  "retweets_per_hour_of_day_14": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": -0.005533941081861116,
+    "loss": -0.005533936421924873
+  },
+  "retweets_per_hour_of_day_15": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": -0.0023802725576787254,
+    "loss": -0.0023802728247568627
+  },
+  "retweets_per_hour_of_day_16": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": -0.004408405264748644,
+    "loss": -0.004408401680057461
+  },
+  "retweets_per_hour_of_day_17": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.003567727496825601,
+    "loss": -0.003567718744555609
+  },
+  "retweets_per_hour_of_day_18": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.009325123819891895,
+    "loss": -0.009325115976172582
+  },
+  "retweets_per_hour_of_day_19": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": -0.0012043779049201175,
+    "loss": -0.0012043699599015856
+  },
+  "retweets_per_hour_of_day_2": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": 0.0010691228372998463,
+    "loss": 0.001069124562446011
+  },
+  "retweets_per_hour_of_day_20": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": -0.003807100092662441,
+    "loss": -0.003807087567698514
+  },
+  "retweets_per_hour_of_day_21": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.0013974106483274351,
+    "loss": -0.0013974037264352368
+  },
+  "retweets_per_hour_of_day_22": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": -0.006717775474074483,
+    "loss": -0.006717771609886458
+  },
+  "retweets_per_hour_of_day_23": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": -0.00336276905137764,
+    "loss": -0.0033627631003904923
+  },
+  "retweets_per_hour_of_day_3": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": -0.0007240031127573321,
+    "loss": -0.0007239923644695168
+  },
+  "retweets_per_hour_of_day_4": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": -0.0019603981943223103,
+    "loss": -0.0019603910283272352
+  },
+  "retweets_per_hour_of_day_5": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0018846736713927503,
+    "loss": 0.0018846767069482517
+  },
+  "retweets_per_hour_of_day_6": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": -0.0013638601151149676,
+    "loss": -0.0013638528827462082
+  },
+  "retweets_per_hour_of_day_7": {
+    "bin_accuracy": 0.006211180124223503,
+    "binary_crossentropy": -0.007902275713009638,
+    "loss": -0.007902271710104825
+  },
+  "retweets_per_hour_of_day_8": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": -0.006298589331026838,
+    "loss": -0.006298576551055701
+  },
+  "retweets_per_hour_of_day_9": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": -0.0010720527271326497,
+    "loss": -0.0010720475038848987
+  },
+  "retweets_per_month_1": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0016076060994273667,
+    "loss": 0.0016076079517695352
+  },
+  "retweets_per_month_10": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.006567771042159221,
+    "loss": 0.006567775404879017
+  },
+  "retweets_per_month_11": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.009191820017487307,
+    "loss": 0.009191834325894821
+  },
+  "retweets_per_month_12": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.00527054641935587,
+    "loss": 0.005270558120162222
+  },
+  "retweets_per_month_2": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.002630458744364711,
+    "loss": 0.00263046592427707
+  },
+  "retweets_per_month_3": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.006865645786982955,
+    "loss": 0.006865654019233947
+  },
+  "retweets_per_month_4": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.003376937038694433,
+    "loss": 0.0033769563985814877
+  },
+  "retweets_per_month_5": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0005154301484372459,
+    "loss": 0.0005154346769548346
+  },
+  "retweets_per_month_6": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.013847437446995958,
+    "loss": 0.013847447017797776
+  },
+  "retweets_per_month_7": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": 0.0070249174259008895,
+    "loss": 0.007024925398808057
+  },
+  "retweets_per_month_8": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": 0.02140572054157336,
+    "loss": 0.021405734243276298
+  },
+  "retweets_per_month_9": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0025138831819379592,
+    "loss": 0.002513891988381839
+  },
+  "retweets_per_weekday_23": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.0014970605926667435,
+    "loss": -0.0014970551725037307
+  },
+  "self_replies_count": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.005087387611928312,
+    "loss": -0.005087377920006381
+  },
+  "self_retweets_count": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.002379907823509414,
+    "loss": 0.00237990410778649
+  },
+  "statuses_count": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.001702740617773646,
+    "loss": 0.0017027446120884693
+  },
+  "top1_rt_count": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": 0.0044535567390697195,
+    "loss": 0.0044535560857342504
+  },
+  "top2_rt_count": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": 0.010132453897027771,
+    "loss": 0.010132451599567938
+  },
+  "top3_rt_count": {
+    "bin_accuracy": 0.006211180124223503,
+    "binary_crossentropy": -0.010426388481371729,
+    "loss": -0.010426389892232713
+  },
+  "top4_rt_count": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.003429838609128183,
+    "loss": -0.0034298346499386234
+  },
+  "top5_rt_count": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 1.5653785565949985e-05,
+    "loss": 1.5657163739940527e-05
+  },
+  "tweets_per_hour_of_day_0": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0006448812344546362,
+    "loss": 0.0006448948200537541
+  },
+  "tweets_per_hour_of_day_1": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 1.2459102949113898e-05,
+    "loss": 1.2464532108041881e-05
+  },
+  "tweets_per_hour_of_day_10": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0009108071671760365,
+    "loss": 0.0009108168472136691
+  },
+  "tweets_per_hour_of_day_11": {
+    "bin_accuracy": -0.006211180124223614,
+    "binary_crossentropy": 0.019557933833221575,
+    "loss": 0.01955794545920181
+  },
+  "tweets_per_hour_of_day_12": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.0023171548806279196,
+    "loss": -0.002317143690928558
+  },
+  "tweets_per_hour_of_day_13": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0023091569726377548,
+    "loss": 0.00230916978224463
+  },
+  "tweets_per_hour_of_day_14": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.002252924920483901,
+    "loss": 0.0022529318627918793
+  },
+  "tweets_per_hour_of_day_15": {
+    "bin_accuracy": -0.006211180124223614,
+    "binary_crossentropy": 0.018366000702409013,
+    "loss": 0.01836601339326882
+  },
+  "tweets_per_hour_of_day_16": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.002371720021776186,
+    "loss": -0.0023717188640781095
+  },
+  "tweets_per_hour_of_day_17": {
+    "bin_accuracy": 0.006211180124223503,
+    "binary_crossentropy": -0.004813584246368352,
+    "loss": -0.004813579599494522
+  },
+  "tweets_per_hour_of_day_18": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.00040291126274605293,
+    "loss": -0.00040291050761384617
+  },
+  "tweets_per_hour_of_day_19": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.00010438216039468373,
+    "loss": 0.00010437660659692871
+  },
+  "tweets_per_hour_of_day_2": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": -0.005296777838329492,
+    "loss": -0.005296769803841944
+  },
+  "tweets_per_hour_of_day_20": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": 0.00952227610049261,
+    "loss": 0.009522282767184753
+  },
+  "tweets_per_hour_of_day_21": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": 0.008294639148887839,
+    "loss": 0.008294643047526029
+  },
+  "tweets_per_hour_of_day_22": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.002324311604856133,
+    "loss": -0.0023243090785715903
+  },
+  "tweets_per_hour_of_day_23": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.0005141365434828682,
+    "loss": -0.0005141348398712831
+  },
+  "tweets_per_hour_of_day_3": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.00033115756810719876,
+    "loss": -0.0003311405860766947
+  },
+  "tweets_per_hour_of_day_4": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.002777400503116617,
+    "loss": -0.002777401600842888
+  },
+  "tweets_per_hour_of_day_5": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0011370501002012645,
+    "loss": 0.0011370568160222194
+  },
+  "tweets_per_hour_of_day_6": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": 0.0005240267645862384,
+    "loss": 0.0005240424808045374
+  },
+  "tweets_per_hour_of_day_7": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": -0.005394150744359838,
+    "loss": -0.005394140964154137
+  },
+  "tweets_per_hour_of_day_8": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0005208042121676859,
+    "loss": 0.0005208124111620582
+  },
+  "tweets_per_hour_of_day_9": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.004396736661587075,
+    "loss": 0.0043967506495414255
+  },
+  "tweets_per_month_1": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.00029313248088408406,
+    "loss": -0.0002931174793228686
+  },
+  "tweets_per_month_10": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0031375190523456054,
+    "loss": 0.003137532702606638
+  },
+  "tweets_per_month_11": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.002381433191681076,
+    "loss": 0.002381446163939399
+  },
+  "tweets_per_month_12": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.001931358729211352,
+    "loss": 0.0019313601591849916
+  },
+  "tweets_per_month_2": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.004819070797409758,
+    "loss": 0.004819080551727584
+  },
+  "tweets_per_month_3": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.001961004495552615,
+    "loss": -0.0019609918123724424
+  },
+  "tweets_per_month_4": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.001581797310967914,
+    "loss": -0.001581791227232232
+  },
+  "tweets_per_month_5": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": -0.0007453131071068209,
+    "loss": -0.0007453082673112843
+  },
+  "tweets_per_month_6": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.0063728439834077055,
+    "loss": 0.00637285408465571
+  },
+  "tweets_per_month_7": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": -0.002178678103543469,
+    "loss": -0.0021786717987208604
+  },
+  "tweets_per_month_8": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.003260173812003997,
+    "loss": 0.003260184571100694
+  },
+  "tweets_per_month_9": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 0.002378548899573951,
+    "loss": 0.002378558294604649
+  },
+  "tweets_per_weekday_23": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": 0.001423004981551651,
+    "loss": 0.0014230153864677464
+  },
+  "tweets_to_hashtags_ratio": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.0014215043288859364,
+    "loss": -0.0014214948837801555
+  },
+  "tweets_to_replies_ratio": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.0003638810101883605,
+    "loss": -0.00036387376325286436
+  },
+  "tweets_to_retweets_ratio": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -0.00012250444305195174,
+    "loss": -0.00012250407743527592
+  },
+  "tweets_to_self_replies_ratio": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": 9.517966581551462e-09,
+    "loss": 1.0180917581203985e-08
+  },
+  "tweets_to_self_retweets_ratio": {
+    "bin_accuracy": 0.0,
+    "binary_crossentropy": -8.215624868568305e-05,
+    "loss": -8.215627962759875e-05
+  },
+  "unique_hashtags": {
+    "bin_accuracy": 0.0031055900621117516,
+    "binary_crossentropy": 0.029561800459725507,
+    "loss": 0.02956180596689445
+  },
+  "unique_languages": {
+    "bin_accuracy": 0.006211180124223503,
+    "binary_crossentropy": 0.0011150988813188323,
+    "loss": 0.0011151060866920748
+  },
+  "verified": {
+    "bin_accuracy": -0.0031055900621118626,
+    "binary_crossentropy": 0.008892152917659879,
+    "loss": 0.008892161320455338
+  }
+}

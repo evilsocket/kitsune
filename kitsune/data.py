@@ -66,7 +66,7 @@ def save_normalizer(filename, datamin, datamax):
         json.dump({
             'min': datamin,
             'max': datamax
-        }, fp)
+        }, fp, indent=2, sort_keys=True)
 
 def load_normalizer(filename):
     with open('norm.json', 'rt') as fp:
