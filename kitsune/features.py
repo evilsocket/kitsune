@@ -56,7 +56,7 @@ def safe_one_hot(profile, field):
     else:
         return 0.0
 
-def metrics_for_statuses(profile_id, statuses, rt_metrics=False, reply_metrics=False):
+def metrics_for_statuses(profile_id, statuses, status_metrics=False, rt_metrics=False, reply_metrics=False):
     num_statuses = len(statuses)
     avg_entropy = 0
     min_entropy = 999999
@@ -65,6 +65,9 @@ def metrics_for_statuses(profile_id, statuses, rt_metrics=False, reply_metrics=F
     avg_length = 0
     min_length = 999999
     max_length = 0
+
+    avg_retweet_count = 0
+    avg_favorite_count = 0
 
     rt_avg_reaction_time = 0.0
     rt_users = Counter()
@@ -90,6 +93,11 @@ def metrics_for_statuses(profile_id, statuses, rt_metrics=False, reply_metrics=F
         if text_entropy > max_entropy:
             max_entropy = text_entropy
 
+        # if these are statuses, extract specific metrics
+        if status_metrics:
+            avg_retweet_count += status['retweet_count']
+            avg_favorite_count += status['favorite_count']
+
         # if these are retweets, extract specific metrics
         if rt_metrics:
             # collect retweet reaction times
@@ -112,11 +120,16 @@ def metrics_for_statuses(profile_id, statuses, rt_metrics=False, reply_metrics=F
     if num_statuses:
         avg_length /= num_statuses
         avg_entropy /= num_statuses
+        avg_retweet_count /= num_statuses
+        avg_favorite_count /= num_statuses
 
     if num_rts:
         rt_avg_reaction_time /= num_rts
 
     metrics = [min_length, avg_length, max_length, min_entropy, avg_entropy, max_entropy]
+
+    if status_metrics:
+        metrics += [avg_retweet_count, avg_favorite_count]
 
     if rt_metrics:
         metrics += [rt_avg_reaction_time, num_self_rt, rt_users]
@@ -144,10 +157,22 @@ def extract(profile, tweets, replies, retweets):
 
     # profile data
     features['user_id'] = profile['id']
+    
     features['user_screen_name'] = profile['screen_name'].lower()
+    features['user_screen_name_length'] = len(features['user_screen_name'])
+    features['user_screen_name_entropy'] = entropy(features['user_screen_name'])
+
     features['days_since_creation'] = days_since( profile['created_at'] )
     features['has_location'] = has_field(profile, 'location')
+
     features['has_description'] = has_field(profile, 'description')
+    if features['has_description']:
+        features['description_length'] = len(profile['description'])
+        features['description_entropy'] = entropy(profile['description'])
+    else:
+        features['description_length'] = 0.0
+        features['description_entropy'] = 0.0
+
     features['has_url'] = has_field(profile, 'url')
     features['has_utc_offset'] = has_field(profile, 'utc_offset')
     features['has_time_zone'] = has_field(profile, 'time_zone')
@@ -183,12 +208,16 @@ def extract(profile, tweets, replies, retweets):
 
     features['unique_hashtags'] = len(unique_hashtags)
     features['avg_hashtags_per_post'] = avg_num_hashtags_per_post
-    features['tweets_to_hashtags_ratio'] = ratio( profile['statuses_count'], features['unique_hashtags'] ) 
+    features['hashtags_to_tweets_ratio'] = ratio( features['unique_hashtags'], profile['statuses_count'] ) 
     features['unique_languages'] = len(unique_languages)
 
     # process tweets
     ( min_tweet_length,  avg_tweet_length, max_tweet_length, \
-      min_tweet_entropy, avg_tweet_entropy, max_tweet_entropy ) = metrics_for_statuses(profile['id'], tweets)
+      min_tweet_entropy, avg_tweet_entropy, max_tweet_entropy, \
+      avg_retweet_count, avg_favorite_count ) = metrics_for_statuses(profile['id'], tweets, status_metrics=True)
+    
+    features['avg_retweet_count'] = avg_retweet_count
+    features['avg_favorite_count'] = avg_favorite_count
     
     features['min_tweet_length'] = min_tweet_length
     features['max_tweet_length'] = max_tweet_length
@@ -211,9 +240,9 @@ def extract(profile, tweets, replies, retweets):
 
     features['retweets_count'] = num_retweets
     features['retweets_average_reaction_time'] = retweet_avg_reaction_time
-    features['tweets_to_retweets_ratio'] = ratio( profile['statuses_count'], num_retweets )
+    features['retweets_to_tweets_ratio'] = ratio( num_retweets, profile['statuses_count'] )
     features['self_retweets_count'] = num_self_retweets
-    features['tweets_to_self_retweets_ratio'] = ratio( profile['statuses_count'], num_self_retweets )
+    features['self_retweets_to_tweets_ratio'] = ratio( num_self_retweets, profile['statuses_count'] )
 
     # process top retweets data
     top_rt_limit = 5
@@ -238,9 +267,9 @@ def extract(profile, tweets, replies, retweets):
     features['avg_reply_entropy'] = avg_reply_entropy
 
     features['replies_count'] = num_replies
-    features['tweets_to_replies_ratio'] = ratio( profile['statuses_count'], num_replies )
+    features['replies_to_tweets_ratio'] = ratio( num_replies, profile['statuses_count'] )
     features['self_replies_count'] = num_self_replies
-    features['tweets_to_self_replies_ratio'] = ratio( profile['statuses_count'], num_self_replies ) 
+    features['self_replies_to_tweets_ratio'] = ratio( num_self_replies, profile['statuses_count'] ) 
 
     # temporal distribution data
     features.update( temporal_distribution('tweets', tweets) )
