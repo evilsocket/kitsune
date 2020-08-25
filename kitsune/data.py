@@ -77,8 +77,14 @@ def load_normalizer(filename):
 
     return norm
         
-def normalize(norm, v):
-    return ((v - norm['min']) / (norm['max'] - norm['min'])).fillna(0)
+def normalize(norm, vector):
+    # IMPORTANT: use vector columns order!  
+    for column in vector:
+        v = vector[column]
+        min_v = norm['min'][column]
+        max_v = norm['max'][column]
+        vector[column] = (v - min_v) / (max_v - min_v)
+    return vector.fillna(0)
 
 def nomalized_from_dict(norm, v):
     vector = pd.DataFrame([v], columns=v.keys())
