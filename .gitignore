@@ -4,3 +4,4 @@ __pycache__
 *.csv
 .DS_Store
 creds.yaml
+test_*.py

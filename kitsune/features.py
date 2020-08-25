@@ -1,10 +1,15 @@
 import time
 import math
+import re
+import numpy as np
 from datetime import datetime
 from email.utils import parsedate
 from collections import Counter, OrderedDict
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 today = datetime.today()
+
+TFIDF_SIMILARITY_THRESHOLD = 0.7
 
 def parse_date(str_date):
     return datetime(*(parsedate(str_date)[:6]))
@@ -139,10 +144,54 @@ def metrics_for_statuses(profile_id, statuses, status_metrics=False, rt_metrics=
 
     return metrics
 
+# ref. https://stackoverflow.com/questions/8897593/how-to-compute-the-similarity-between-two-text-documents  
+def duplicates_metrics(statuses):
+    duplicates = 0
+    duplicates_ratio = 0
+    group_size = len(statuses)
+    corpus = []   
+
+    for r in statuses:
+        text = r['text']
+        # remove mentions, newlines and make lowercase
+        text = re.sub(r'@\w+', '', text).strip().replace('\n', ' ').lower()
+        # remove urls   
+        text = re.sub(r'https?:\/\/.*[\r\n]*', '', text, flags=re.MULTILINE)
+        corpus.append(text)
+
+    if len(corpus) > 1 and group_size > 0:
+        try:
+            vect = TfidfVectorizer(min_df=1, stop_words="english")
+            tfidf = vect.fit_transform(corpus)        
+
+            pairwise_similarity = tfidf * tfidf.T 
+            pairwise_similarity = pairwise_similarity.toarray()     
+            np.fill_diagonal(pairwise_similarity, np.nan)     
+
+            for i, text in enumerate(corpus):
+                max_s = 0.0
+                max_i = 0
+
+                for j, score in enumerate(pairwise_similarity[i]):
+                    if score > max_s:
+                        max_s = score
+                        max_i = j
+
+                if max_s >= TFIDF_SIMILARITY_THRESHOLD:
+                    duplicates += 1
+            
+            duplicates_ratio = ratio( duplicates, group_size )   
+        except ValueError:
+            # ValueError: empty vocabulary; perhaps the documents only contain stop words  
+            pass    
+
+    return (duplicates, duplicates_ratio)
+
 def extract(profile, tweets, replies, retweets):
     all_statuses = tweets + replies + retweets
     num_tweets = len(tweets)
     num_replies = len(replies)
+    num_active_statuses = num_tweets + num_replies
     num_retweets = len(retweets)
     num_total = len(all_statuses)
 
@@ -211,35 +260,21 @@ def extract(profile, tweets, replies, retweets):
     features['hashtags_to_tweets_ratio'] = ratio( features['unique_hashtags'], profile['statuses_count'] ) 
     features['unique_languages'] = len(unique_languages)
 
+    # process duplicated statuses and replies
+    ( features['duplicate_tweets'], features['duplicate_tweets_ratio'] ) = duplicates_metrics(tweets)
+    ( features['duplicate_replies'], features['duplicate_replies_ratio'] ) = duplicates_metrics(replies)
+
     # process tweets
-    ( min_tweet_length,  avg_tweet_length, max_tweet_length, \
-      min_tweet_entropy, avg_tweet_entropy, max_tweet_entropy, \
-      avg_retweet_count, avg_favorite_count ) = metrics_for_statuses(profile['id'], tweets, status_metrics=True)
-    
-    features['avg_retweet_count'] = avg_retweet_count
-    features['avg_favorite_count'] = avg_favorite_count
-    
-    features['min_tweet_length'] = min_tweet_length
-    features['max_tweet_length'] = max_tweet_length
-    features['avg_tweet_length'] = avg_tweet_length
-    features['min_tweet_entropy'] = min_tweet_entropy
-    features['max_tweet_entropy'] = max_tweet_entropy
-    features['avg_tweet_entropy'] = avg_tweet_entropy
+    ( features['min_tweet_length'],  features['avg_tweet_length'], features['max_tweet_length'], \
+      features['min_tweet_entropy'], features['avg_tweet_entropy'] , features['max_tweet_entropy'], \
+      features['avg_retweet_count'], features['avg_favorite_count'] ) = metrics_for_statuses(profile['id'], tweets, status_metrics=True)
 
     # process retweets
-    (min_retweet_length, avg_retweet_length, max_retweet_length, \
-    min_retweet_entropy, avg_retweet_entropy, max_retweet_entropy, \
-    retweet_avg_reaction_time, num_self_retweets, retweed_users ) = metrics_for_statuses(profile['id'], retweets, rt_metrics=True)
-    
-    features['min_retweet_length'] = min_retweet_length
-    features['max_retweet_length'] = max_retweet_length
-    features['avg_retweet_length'] = avg_retweet_length
-    features['min_retweet_entropy'] = min_retweet_entropy
-    features['max_retweet_entropy'] = max_retweet_entropy
-    features['avg_retweet_entropy'] = avg_retweet_entropy
+    (features['min_retweet_length'], features['avg_retweet_length'], features['max_retweet_length'], \
+    features['min_retweet_entropy'] , features['avg_retweet_entropy'], features['max_retweet_entropy'], \
+    features['retweets_average_reaction_time'], num_self_retweets, retweed_users ) = metrics_for_statuses(profile['id'], retweets, rt_metrics=True)
 
     features['retweets_count'] = num_retweets
-    features['retweets_average_reaction_time'] = retweet_avg_reaction_time
     features['retweets_to_tweets_ratio'] = ratio( num_retweets, profile['statuses_count'] )
     features['self_retweets_count'] = num_self_retweets
     features['self_retweets_to_tweets_ratio'] = ratio( num_self_retweets, profile['statuses_count'] )
@@ -256,15 +291,9 @@ def extract(profile, tweets, replies, retweets):
             features['top%d_rt_count' % (i + 1)] = 0.0
 
     # process replies
-    (min_reply_length, avg_reply_length, max_reply_length, num_self_replies, \
-    min_reply_entropy, avg_reply_entropy, max_reply_entropy ) = metrics_for_statuses(profile['id'], replies, reply_metrics=True)
-
-    features['min_reply_length'] = min_reply_length
-    features['max_reply_length'] = max_reply_length
-    features['avg_reply_length'] = avg_reply_length
-    features['min_reply_entropy'] = min_reply_entropy
-    features['max_reply_entropy'] = max_reply_entropy
-    features['avg_reply_entropy'] = avg_reply_entropy
+    (features['min_reply_length'], features['avg_reply_length'] , features['max_reply_length'] , \
+    num_self_replies, 
+    features['min_reply_entropy'], features['avg_reply_entropy'], features['max_reply_entropy']  ) = metrics_for_statuses(profile['id'], replies, reply_metrics=True)
 
     features['replies_count'] = num_replies
     features['replies_to_tweets_ratio'] = ratio( num_replies, profile['statuses_count'] )
