@@ -5,7 +5,7 @@ import json
 
 import kitsune.features as features
 
-def load(profile_path, limit=500, quiet=False):
+def load(profile_path, limit=200, quiet=False):
     profile_file = os.path.join(profile_path, 'profile.json')
     tweets_path = os.path.join(profile_path, 'tweets')
 

@@ -9,6 +9,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 today = datetime.today()
 
+EMOJI_RE                   = re.compile('[\U00010000-\U0010ffff]', flags=re.UNICODE)
 TFIDF_SIMILARITY_THRESHOLD = 0.7
 
 def parse_date(str_date):
@@ -239,6 +240,20 @@ def source_metrics(user_statuses):
         windows / total,
         non_std / total)
 
+def emoji_metrics(user_statuses):
+    total = len(user_statuses)
+    if total == 0:
+        return (0, 0)
+
+    unique = Counter()
+    for s in user_statuses:
+        emojis = EMOJI_RE.findall(s['text'])
+        if emojis:
+            for e in emojis:
+                unique.update([e])
+
+    return ( len(unique), sum([c for e, c in unique.items()]) / total )
+
 def extract(profile, tweets, replies, retweets):
     all_statuses = tweets + replies + retweets
     user_statuses = tweets + replies
@@ -253,7 +268,6 @@ def extract(profile, tweets, replies, retweets):
 
     features = OrderedDict()
     
-    # TODO: emoji stats
     # TODO: urls stats
     # TODO: location stats   
 
@@ -324,6 +338,9 @@ def extract(profile, tweets, replies, retweets):
       features['source_websites_ratio'],
       features['source_windows_ratio'],
       features['source_non_std_ratio'] ) = source_metrics(user_statuses)
+
+    # emojis
+    ( features['unique_emojis'], features['emoji_ratio'] ) = emoji_metrics(user_statuses) 
 
     # process duplicated statuses and replies
     ( features['duplicate_tweets'], features['duplicate_tweets_ratio'] ) = duplicates_metrics(tweets)
