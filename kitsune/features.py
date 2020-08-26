@@ -203,7 +203,8 @@ def extract(profile, tweets, replies, retweets):
     
     # TODO: emoji stats
     # TODO: urls stats
-    # TODO: source stats, has custom, known sources histogram 
+    # TODO: location stats   
+    # TODO: source stats, source avg entropy, has custom, known sources histogram 
 
     # profile data
     features['user_id'] = profile['id']
