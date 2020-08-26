@@ -187,11 +187,63 @@ def duplicates_metrics(statuses):
 
     return (duplicates, duplicates_ratio)
 
+def source_metrics(user_statuses):
+    total = len(user_statuses)
+    if total == 0:
+        return  (0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
+    adv = 0
+    android = 0
+    blackberry = 0
+    ipad = 0
+    iphone = 0
+    mac = 0
+    websites = 0
+    windows = 0
+    non_std = 0
+
+    sources = Counter()
+    for status in user_statuses:
+        src = status['source'].lower()
+        sources.update([src])
+
+    for src, count in sources.items():
+        if 'twitter for advertisers' in src:
+            adv += count
+        elif 'twitter for android' in src:
+            android += count
+        elif 'twitter for blackberry' in src:
+            blackberry += count
+        elif 'twitter for ipad' in src:
+            ipad += count
+        elif 'twitter for iphone' in src:
+            iphone += count
+        elif 'twitter for mac' in src:
+            mac += count
+        elif 'twitter for websites' in src:
+            websites += count
+        elif 'twitter for windows' in src:
+            windows += count
+        elif 'twitter.com' not in src:
+            non_std += count
+
+    return ( \
+        len(sources), 
+        adv / total, 
+        android / total, 
+        blackberry / total,
+        ipad / total,
+        iphone / total,
+        mac / total,
+        websites / total,
+        windows / total,
+        non_std / total)
+
 def extract(profile, tweets, replies, retweets):
     all_statuses = tweets + replies + retweets
+    user_statuses = tweets + replies
     num_tweets = len(tweets)
     num_replies = len(replies)
-    num_active_statuses = num_tweets + num_replies
     num_retweets = len(retweets)
     num_total = len(all_statuses)
 
@@ -204,7 +256,6 @@ def extract(profile, tweets, replies, retweets):
     # TODO: emoji stats
     # TODO: urls stats
     # TODO: location stats   
-    # TODO: source stats, source avg entropy, has custom, known sources histogram 
 
     # profile data
     features['user_id'] = profile['id']
@@ -261,6 +312,18 @@ def extract(profile, tweets, replies, retweets):
     features['avg_hashtags_per_post'] = avg_num_hashtags_per_post
     features['hashtags_to_tweets_ratio'] = ratio( features['unique_hashtags'], profile['statuses_count'] ) 
     features['unique_languages'] = len(unique_languages)
+
+    # process sources   
+    ( features['unique_sources'], 
+      features['source_adv_ratio'], 
+      features['source_android_ratio'],
+      features['source_blackberry_ratio'],
+      features['source_ipad_ratio'],
+      features['source_iphone_ratio'],
+      features['source_mac_ratio'],
+      features['source_websites_ratio'],
+      features['source_windows_ratio'],
+      features['source_non_std_ratio'] ) = source_metrics(user_statuses)
 
     # process duplicated statuses and replies
     ( features['duplicate_tweets'], features['duplicate_tweets_ratio'] ) = duplicates_metrics(tweets)
