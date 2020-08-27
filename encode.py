@@ -9,7 +9,7 @@ import kitsune.profile as profile
 output = 'dataset.csv'
 
 profile_paths = {
-    'bot': ['../icsy-data/bellingcat_ccp_vs_who_botnet/', '../icsy-data/campagna_salvini_bots'],
+    'bot': ['../icsy-data/bellingcat_ccp_vs_who_botnet/'], # '../icsy-data/campagna_salvini_bots'],
     'legit': ['../icsy_legit/profiles/', '../icsy-data/legit-pinperepette']
 }
 

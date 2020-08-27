@@ -5,7 +5,7 @@ import json
 
 import kitsune.features as features
 
-def load(profile_path, limit=200, quiet=False):
+def load(profile_path, limit=200, quiet=False, extract_features_vector=True):
     profile_file = os.path.join(profile_path, 'profile.json')
     tweets_path = os.path.join(profile_path, 'tweets')
 
@@ -55,12 +55,17 @@ def load(profile_path, limit=200, quiet=False):
         if num_total == 0:
             # print("%s does not have tweets, skipping" % tweets_path)
             return None
- 
-        if not quiet:
-            print("vectorializing %s : %d tweets, %d replies, %d retweets" % (profile_path, num_tweets, num_replies, num_retweets))        
 
         data = (profile, tweets, replies, retweets)
-        vector = features.extract(profile, tweets, replies, retweets)
+        vector = None
+
+        if extract_features_vector:
+            if not quiet:
+                print("vectorializing %s : %d tweets, %d replies, %d retweets" % (profile_path, num_tweets, num_replies, num_retweets))        
+            vector = features.extract(profile, tweets, replies, retweets)
+        elif not quiet:
+            print("loaded %s : %d tweets, %d replies, %d retweets" % (profile_path, num_tweets, num_replies, num_retweets))        
+ 
         return (data, vector)
 
     except Exception as e:

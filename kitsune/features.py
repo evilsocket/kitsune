@@ -162,7 +162,7 @@ def duplicates_metrics(statuses):
 
     if len(corpus) > 1 and group_size > 0:
         try:
-            vect = TfidfVectorizer(min_df=1, stop_words="english")
+            vect = TfidfVectorizer(min_df=1)
             tfidf = vect.fit_transform(corpus)        
 
             pairwise_similarity = tfidf * tfidf.T 
@@ -170,17 +170,10 @@ def duplicates_metrics(statuses):
             np.fill_diagonal(pairwise_similarity, np.nan)     
 
             for i, text in enumerate(corpus):
-                max_s = 0.0
-                max_i = 0
-
                 for j, score in enumerate(pairwise_similarity[i]):
-                    if score > max_s:
-                        max_s = score
-                        max_i = j
+                    if i != j and score >= TFIDF_SIMILARITY_THRESHOLD:
+                        duplicates += 1
 
-                if max_s >= TFIDF_SIMILARITY_THRESHOLD:
-                    duplicates += 1
-            
             duplicates_ratio = ratio( duplicates, group_size )   
         except ValueError:
             # ValueError: empty vocabulary; perhaps the documents only contain stop words  
