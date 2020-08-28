@@ -247,6 +247,31 @@ def emoji_metrics(user_statuses):
 
     return ( len(unique), sum([c for e, c in unique.items()]) / total )
 
+def place_metrics(user_statuses):
+    total = len(user_statuses)
+    if total == 0:
+        return (0, 0, 0, 0, 0)
+
+    unique = Counter()
+    for s in user_statuses:
+        if 'place' in s and s['place'] is not None:
+            unique.update([s['place']['id']])
+
+    tot_statuses_with_place = sum([c for e, c in unique.items()])
+
+    top3 = unique.most_common(3)
+    ntop = len(top3)
+    tops = [0.0, 0.0, 0.0]
+
+    for i in range(ntop):
+        tops[i] = top3[i][1] / tot_statuses_with_place
+
+    return [
+        len(unique), 
+        tot_statuses_with_place / total
+    ] + tops
+
+
 def extract(profile, tweets, replies, retweets):
     all_statuses = tweets + replies + retweets
     user_statuses = tweets + replies
@@ -262,7 +287,6 @@ def extract(profile, tweets, replies, retweets):
     features = OrderedDict()
     
     # TODO: urls stats
-    # TODO: location stats   
 
     # profile data
     features['user_id'] = profile['id']
@@ -334,6 +358,10 @@ def extract(profile, tweets, replies, retweets):
 
     # emojis
     ( features['unique_emojis'], features['emoji_ratio'] ) = emoji_metrics(user_statuses) 
+
+    # places 
+    ( features['unique_places'], features['places_ratio'],
+      features['top1_place_ratio'], features['top2_place_ratio'], features['top3_place_ratio'] ) = place_metrics(user_statuses) 
 
     # process duplicated statuses and replies
     ( features['duplicate_tweets'], features['duplicate_tweets_ratio'] ) = duplicates_metrics(tweets)
