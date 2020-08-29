@@ -1,0 +1,83 @@
+normalizing dataset ...
+data shape: (1797, 198) (197 features)
+bots:541 legit:1256
+generating train, test and validation datasets (test=0.150000 validation=0.150000) ...
+unique labels: 2
+building neural network for: inputs=197 outputs=2
+2020-08-29 18:45:49.485123: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2020-08-29 18:45:49.501864: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7f9dfdf4b920 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-08-29 18:45:49.501886: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+hidden_0 (Dense)             (None, 256)               50688     
+_________________________________________________________________
+dropout_0 (Dropout)          (None, 256)               0         
+_________________________________________________________________
+hidden_1 (Dense)             (None, 128)               32896     
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 128)               0         
+_________________________________________________________________
+hidden_2 (Dense)             (None, 64)                8256      
+_________________________________________________________________
+dropout_2 (Dropout)          (None, 64)                0         
+_________________________________________________________________
+output (Dense)               (None, 2)                 130       
+=================================================================
+Total params: 91,970
+Trainable params: 91,970
+Non-trainable params: 0
+_________________________________________________________________
+training model ...
+Epoch 1/100
+79/79 - 0s - loss: 0.3349 - binary_crossentropy: 0.3349 - binary_accuracy: 0.8568 - val_loss: 0.1520 - val_binary_crossentropy: 0.1520 - val_binary_accuracy: 0.9442
+Epoch 2/100
+79/79 - 0s - loss: 0.1685 - binary_crossentropy: 0.1685 - binary_accuracy: 0.9300 - val_loss: 0.1346 - val_binary_crossentropy: 0.1346 - val_binary_accuracy: 0.9480
+Epoch 3/100
+79/79 - 0s - loss: 0.1505 - binary_crossentropy: 0.1505 - binary_accuracy: 0.9451 - val_loss: 0.0917 - val_binary_crossentropy: 0.0917 - val_binary_accuracy: 0.9665
+Epoch 4/100
+79/79 - 0s - loss: 0.1044 - binary_crossentropy: 0.1044 - binary_accuracy: 0.9554 - val_loss: 0.0784 - val_binary_crossentropy: 0.0784 - val_binary_accuracy: 0.9740
+Epoch 5/100
+79/79 - 0s - loss: 0.0930 - binary_crossentropy: 0.0930 - binary_accuracy: 0.9618 - val_loss: 0.0733 - val_binary_crossentropy: 0.0733 - val_binary_accuracy: 0.9703
+Epoch 6/100
+79/79 - 0s - loss: 0.0841 - binary_crossentropy: 0.0841 - binary_accuracy: 0.9690 - val_loss: 0.0560 - val_binary_crossentropy: 0.0560 - val_binary_accuracy: 0.9740
+Epoch 7/100
+79/79 - 0s - loss: 0.0683 - binary_crossentropy: 0.0683 - binary_accuracy: 0.9753 - val_loss: 0.0914 - val_binary_crossentropy: 0.0914 - val_binary_accuracy: 0.9665
+Epoch 8/100
+79/79 - 0s - loss: 0.0577 - binary_crossentropy: 0.0577 - binary_accuracy: 0.9753 - val_loss: 0.0551 - val_binary_crossentropy: 0.0551 - val_binary_accuracy: 0.9777
+Epoch 9/100
+79/79 - 0s - loss: 0.0565 - binary_crossentropy: 0.0565 - binary_accuracy: 0.9793 - val_loss: 0.0574 - val_binary_crossentropy: 0.0574 - val_binary_accuracy: 0.9628
+Epoch 10/100
+79/79 - 0s - loss: 0.0465 - binary_crossentropy: 0.0465 - binary_accuracy: 0.9849 - val_loss: 0.0422 - val_binary_crossentropy: 0.0422 - val_binary_accuracy: 0.9814
+Epoch 11/100
+79/79 - 0s - loss: 0.0774 - binary_crossentropy: 0.0774 - binary_accuracy: 0.9690 - val_loss: 0.0663 - val_binary_crossentropy: 0.0663 - val_binary_accuracy: 0.9703
+Epoch 12/100
+79/79 - 0s - loss: 0.0532 - binary_crossentropy: 0.0532 - binary_accuracy: 0.9817 - val_loss: 0.0690 - val_binary_crossentropy: 0.0690 - val_binary_accuracy: 0.9665
+Epoch 13/100
+79/79 - 0s - loss: 0.0366 - binary_crossentropy: 0.0366 - binary_accuracy: 0.9865 - val_loss: 0.0767 - val_binary_crossentropy: 0.0767 - val_binary_accuracy: 0.9628
+Epoch 14/100
+79/79 - 0s - loss: 0.0322 - binary_crossentropy: 0.0322 - binary_accuracy: 0.9889 - val_loss: 0.1267 - val_binary_crossentropy: 0.1267 - val_binary_accuracy: 0.9591
+Epoch 15/100
+79/79 - 0s - loss: 0.0316 - binary_crossentropy: 0.0316 - binary_accuracy: 0.9889 - val_loss: 0.1114 - val_binary_crossentropy: 0.1114 - val_binary_accuracy: 0.9591
+Epoch 16/100
+79/79 - 0s - loss: 0.0170 - binary_crossentropy: 0.0170 - binary_accuracy: 0.9944 - val_loss: 0.1312 - val_binary_crossentropy: 0.1312 - val_binary_accuracy: 0.9554
+Epoch 17/100
+79/79 - 0s - loss: 0.0204 - binary_crossentropy: 0.0204 - binary_accuracy: 0.9944 - val_loss: 0.1244 - val_binary_crossentropy: 0.1244 - val_binary_accuracy: 0.9591
+Epoch 18/100
+79/79 - 0s - loss: 0.0168 - binary_crossentropy: 0.0168 - binary_accuracy: 0.9936 - val_loss: 0.1527 - val_binary_crossentropy: 0.1527 - val_binary_accuracy: 0.9554
+Epoch 19/100
+79/79 - 0s - loss: 0.0194 - binary_crossentropy: 0.0194 - binary_accuracy: 0.9936 - val_loss: 0.0960 - val_binary_crossentropy: 0.0960 - val_binary_accuracy: 0.9517
+Epoch 20/100
+79/79 - 0s - loss: 0.0155 - binary_crossentropy: 0.0155 - binary_accuracy: 0.9960 - val_loss: 0.1576 - val_binary_crossentropy: 0.1576 - val_binary_accuracy: 0.9554
+Epoch 21/100
+79/79 - 0s - loss: 0.0456 - binary_crossentropy: 0.0456 - binary_accuracy: 0.9817 - val_loss: 0.0825 - val_binary_crossentropy: 0.0825 - val_binary_accuracy: 0.9591
+Epoch 22/100
+79/79 - 0s - loss: 0.0112 - binary_crossentropy: 0.0112 - binary_accuracy: 0.9984 - val_loss: 0.1104 - val_binary_crossentropy: 0.1104 - val_binary_accuracy: 0.9703
+Epoch 23/100
+79/79 - 0s - loss: 0.0329 - binary_crossentropy: 0.0329 - binary_accuracy: 0.9905 - val_loss: 0.0810 - val_binary_crossentropy: 0.0810 - val_binary_accuracy: 0.9665
+Epoch 24/100
+79/79 - 0s - loss: 0.0212 - binary_crossentropy: 0.0212 - binary_accuracy: 0.9920 - val_loss: 0.1667 - val_binary_crossentropy: 0.1667 - val_binary_accuracy: 0.9480
+Epoch 25/100
+79/79 - 0s - loss: 0.0130 - binary_crossentropy: 0.0130 - binary_accuracy: 0.9960 - val_loss: 0.0627 - val_binary_crossentropy: 0.0627 - val_binary_accuracy: 0.9777
