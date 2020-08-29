@@ -37,6 +37,7 @@ profile_paths = list(glob.glob(os.path.join(profile_path, "*")))
 predictions_file = os.path.join(profile_path, 'predictions.csv')
 graph_file = os.path.join(profile_path, 'graph.gml')
 predictions = {}
+known_only = False
 
 with open(predictions_file, 'rt') as fp:
     for no, line in enumerate(fp):
@@ -66,8 +67,9 @@ for screen_name, data in users.items():
         counters.update([rt['retweeted_status']['user']['screen_name']])
 
     for retweeted_screen_name, count in counters.items():
-        edge_index        = (screen_name, retweeted_screen_name)
-        edges[edge_index] = count / num_retweets
+        if not known_only or retweeted_screen_name in users:
+            edge_index        = (screen_name, retweeted_screen_name)
+            edges[edge_index] = count / num_retweets
 
 print("generating graph ...")
 
@@ -75,7 +77,7 @@ G = nx.MultiDiGraph()
 
 for edge, weight in edges.items():
     left, right = edge
-    if weight >= 0.0:
+    if weight >= 0.2:
         G.add_edge( left, right, weight = weight)
 
 pos = nx.spring_layout(G)
