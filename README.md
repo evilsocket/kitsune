@@ -11,7 +11,7 @@ Make sure you have python3 and pip3 installed, then proceed to install the requi
     cd /path/to/kitsune
     sudo pip3 install -r requirements.txt
     
-Then you'll need to create two folders, in this example we'll create a `bots` folder and a `legit` folder. Place in each one a file named `seed.txt` with the list of accounts you want to be classified in that group, so that you'll have:
+You'll need to create two folders, in this example we'll create a `bots` folder and a `legit` folder. Place in each one a file named `seed.txt` with the list of accounts you want to be classified in that group, so that you'll have:
 
     /path/to/bots/seed.txt
     /path/to/legit/seed.txt
