@@ -58,3 +58,7 @@ To test the model predictions on a profile folder or multiple folders at once:
      /path/to/kitsune/test.py \
         --model /path/to/model.h5 \
         --profile /path/to/profile-data-folder
+
+## License
+
+`kitsune` is made with ♥  by [@evilsocket](https://twitter.com/evilsocket) and it is released under the GPL3 license.        
