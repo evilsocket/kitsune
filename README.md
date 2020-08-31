@@ -18,7 +18,7 @@ You'll need to create two folders, in this example we'll create a `bots` folder 
 
 Ideally the two lists should cointain the same number accounts, at least in the order of one hundred each. The more accounts you'll use and the more accurately they're grouped, the more accurate the model will be.
 
-Now you will have to download the last tweets and profile data for each list:
+Download the last tweets and profile data for each list:
 
     /path/to/kitsune/download.py \
         --consumer_key TWITTER_CONSUMER_KEY \
