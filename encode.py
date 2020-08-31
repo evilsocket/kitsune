@@ -3,20 +3,32 @@ import os
 import multiprocessing as mp
 import glob
 import csv
+import argparse
 
 import kitsune.profile as profile
 
-output = 'dataset.csv'
+parser = argparse.ArgumentParser()
+
+parser.add_argument("--label_a", help="Label of the first group of accounts.", default='bot')
+parser.add_argument("--path_a", help="Path of the first group of accounts.", required=True)
+
+parser.add_argument("--label_b", help="Label of the second group of accounts.", default='legit')
+parser.add_argument("--path_b", help="Path of the second group of accounts.", required=True)
+
+parser.add_argument("--output", help="Output CSV file.", default='dataset.csv')
+
+args = parser.parse_args()
 
 profile_paths = {
-    'bot': ['../icsy-data/bellingcat_ccp_vs_who_botnet/'], # '../icsy-data/campagna_salvini_bots'],
-    'legit': ['../icsy_legit/profiles/', '../icsy-data/legit-pinperepette']
+    args.label_a: [args.path_a],
+    args.label_b: [args.path_b],
 }
 
 profiles = {
-    'bot': [],
-    'legit': []
+    args.label_a: [],
+    args.label_b: []
 }
+
 
 for profiles_label, profiles_paths in profile_paths.items():
     for profiles_path in profiles_paths:
@@ -38,9 +50,9 @@ for label, records in profiles.items():
         break
     break
 
-print("saving to %s ..." % output)   
+print("saving to %s ..." % args.output)   
 
-with open(output, 'w+t') as fp:
+with open(args.output, 'w+t') as fp:
     w = csv.DictWriter(fp, fieldnames=['label'] + list(first_row.keys()))
     w.writeheader()
 

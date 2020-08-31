@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
 import os
-import sys
 import json
 import glob
 import random
 import csv
+import argparse
 import tensorflow as tf
 
 import kitsune.profile as profile
 import kitsune.data as data
 
-if len(sys.argv) < 2:
-    print("usage: %s <profile path>" % sys.argv[0])
-    quit()
+parser = argparse.ArgumentParser()
+
+parser.add_argument("--model", help="Trained model file.", default='model.h5')
+parser.add_argument("--profile", help="Profile path to classify, or folder containing moltiple profiles.", required=True)
+
+args = parser.parse_args()
 
 def print_pred(screen_name, prediction):
     if prediction[0] > prediction[1]:
@@ -45,22 +48,21 @@ def compare_predictions(prev, next):
         return "%f" % (10.0 + (prev_conf - next_conf))
 
 
-norm = data.load_normalizer('norm.json')
-model = tf.keras.models.load_model('model.h5')
+base_path = os.path.dirname(args.model)
+norm = data.load_normalizer(os.path.join(base_path, 'norm.json'))
+model = tf.keras.models.load_model(args.model)
 
 # model.summary()
 
-profile_path = sys.argv[1]
-profile_file = os.path.join(profile_path, 'profile.json')
-output_file  = os.path.join(profile_path, 'predictions.csv')
+profile_file = os.path.join(args.profile, 'profile.json')
+output_file  = os.path.join(args.profile, 'predictions.csv')
 profile_paths = []
-single_mode = False
+single_mode = os.path.exists(profile_file)
 
-if os.path.exists(profile_file):
-    profile_paths = [profile_path]
-    single_mode   = True
+if single_mode:
+    profile_paths = [args.profile]
 else:
-    profile_paths = list(glob.glob(os.path.join(profile_path, "*")))
+    profile_paths = list(glob.glob(os.path.join(args.profile, "*")))
 
 print("writing predictions to %s ..." % output_file)
 

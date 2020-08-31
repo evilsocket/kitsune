@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import json
+import argparse
 import numpy as np
 import pandas as pd
 import tensorflow as tf
@@ -8,10 +9,14 @@ import tensorflow as tf
 import kitsune.data as data
 import kitsune.dnn as dnn
 
-filename = 'dataset.csv'
-output = 'model.h5'
+parser = argparse.ArgumentParser()
 
-(datamin, datamax, dataset) = data.load(filename)
+parser.add_argument("--dataset", help="Dataset CSV file.", default='dataset.csv')
+parser.add_argument("--output", help="Output model file.", default='model.h5')
+
+args = parser.parse_args()
+
+(datamin, datamax, dataset) = data.load(args.dataset)
 
 feature_names = list(dataset.columns)
 feature_names.remove('label')
@@ -43,8 +48,9 @@ print()
 
 print("saving model to %s ..." % output)
 
-model.save(output)
-data.save_normalizer("norm.json", datamin, datamax)
+output_path = os.path.dirname(args.output)
+model.save(args.output)
+data.save_normalizer(os.path.join(output_path, "norm.json"), datamin, datamax)
 
 print("running differential evaluation on %d features ..." % len(feature_names))
 
@@ -82,5 +88,5 @@ for feature_name, deltas in by_feature.items():
     else:
         print("ko: %s %f%%" % (feature_name, delta))
 
-with open('relevances.json', 'w+t') as fp:
+with open(os.path.join(output_path, 'relevances.json'), 'w+t') as fp:
     json.dump(by_feature, fp, indent=2, sort_keys=True)
