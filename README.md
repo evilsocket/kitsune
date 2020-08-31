@@ -93,4 +93,4 @@ To test the model predictions on a profile folder or multiple folders at once:
 
 ## License
 
-`kitsune` is made with ♥  by [@evilsocket](https://twitter.com/evilsocket) and it is released under the GPL3 license.        
+`kitsune` is made with ♥ by [@evilsocket](https://twitter.com/evilsocket) and it is released under the GPL3 license.        
