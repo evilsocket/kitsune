@@ -46,7 +46,7 @@ history = model.fit( X_train, Y_train,
 
 print()
 
-print("saving model to %s ..." % output)
+print("saving model to %s ..." % args.output)
 
 output_path = os.path.dirname(args.output)
 model.save(args.output)
