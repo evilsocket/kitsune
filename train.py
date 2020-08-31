@@ -60,6 +60,8 @@ print("model saved to %s ..." % args.output)
 
 print("running on %d test samples ..." % X_test.shape[0])
 
+# reload with the best snapshot
+model = tf.keras.models.load_model(args.output)
 metrics = model.evaluate(X_test,  Y_test, verbose=0)
 metrics_names = ['loss', 'binary_crossentropy', 'bin_accuracy']
 print()
