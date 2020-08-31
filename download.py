@@ -4,6 +4,7 @@ import time
 from datetime import datetime
 from email.utils import parsedate
 import json
+import glob
 import argparse
 import tweepy
 
@@ -26,7 +27,7 @@ def download_profile(username, profile_file, api):
 def count_tweets(tweets_path):
     return len(glob.glob("%s/*.json" % tweets_path))
 
-def save_tweet(self, tweets_path, tweet):
+def save_tweet(tweets_path, tweet):
     tweet_filename = "%s_%s.json" %(tweet.created_at, tweet.id)
     tweet_filename = tweet_filename.replace(' ', '_')
     tweet_filename = "%s/%s" % (tweets_path, tweet_filename)
@@ -38,12 +39,12 @@ def save_tweet(self, tweets_path, tweet):
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument("--consumer_key", help="API consumer key.")
-parser.add_argument("--consumer_secret", help="API consumer secret.")
-parser.add_argument("--access_token", help="API access token.")
-parser.add_argument("--access_token_secret", help="API access token secret.")
+parser.add_argument("--consumer_key", help="API consumer key.", required=True)
+parser.add_argument("--consumer_secret", help="API consumer secret.", required=True)
+parser.add_argument("--access_token", help="API access token.", required=True)
+parser.add_argument("--access_token_secret", help="API access token secret.", required=True)
 
-parser.add_argument("--seed", help="File with profile names.", default='seed.txt')
+parser.add_argument("--seed", help="File with profile names.", required=True)
 parser.add_argument("--output", help="Output path.", default='output')
 parser.add_argument("--limit", help="Number of statuses to download for each account.", type=int, default=500)
 parser.add_argument("--delay", help="Number of seconds to wait when API rate limit is reached.", type=int, default=900)
