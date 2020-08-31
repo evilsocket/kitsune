@@ -2,7 +2,7 @@
 
 An artificial neural network designed to detect and correlate Twitter profiles with similar behaviours, originally developed to detect automated Twitter accounts (bots), but that can be used for any custom list of accounts.
 
-**! WORK IN PROGRES, STILL IN BETA STAGE**
+**! WORK IN PROGRES, STILL IN BETA STAGE !**
 
 ## Instructions
 
