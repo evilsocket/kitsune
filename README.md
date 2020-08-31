@@ -53,11 +53,43 @@ Once this is done, you can train the model:
         
 This will start the training, print accuracy metrics and save the model, normalization values and features relevances in the folder you specified.
 
+    normalizing dataset ...
+    data shape: (1797, 198) (197 features)
+    bots:541 legit:1256
+    generating train, test and validation datasets (test=0.150000 validation=0.150000) ...
+    unique labels: 2
+    building neural network for: inputs=197 outputs=2
+    ...
+    training model ...
+    Epoch 1/100
+    79/79 - 0s - loss: 0.3349 - binary_crossentropy: 0.3349 - binary_accuracy: 0.8568 - val_loss: 0.1520 - val_binary_crossentropy: 0.1520 - val_binary_accuracy: 0.9442
+    Epoch 2/100
+    79/79 - 0s - loss: 0.1685 - binary_crossentropy: 0.1685 - binary_accuracy: 0.9300 - val_loss: 0.1346 - val_binary_crossentropy: 0.1346 - val_binary_accuracy: 0.9480
+    Epoch 3/100
+    ...
+    79/79 - 0s - loss: 0.0130 - binary_crossentropy: 0.0130 - binary_accuracy: 0.9960 - val_loss: 0.0627 - val_binary_crossentropy: 0.0627 - val_binary_accuracy: 0.9777
+
 To test the model predictions on a profile folder or multiple folders at once:
 
      /path/to/kitsune/test.py \
         --model /path/to/model.h5 \
         --profile /path/to/profile-data-folder
+
+    writing predictions to /path/to/profile-data-folder/predictions.csv ...
+
+    -------
+
+            screen_name | class | confidence
+
+        someusername   bot     100.000000 %
+        someusername   bot     99.893301 %
+        someusername   bot     99.999895 %
+        someusername   bot     99.993192 %
+        someusername   bot     66.441199 %
+        someusername   bot     99.981043 %
+        someusername   bot     99.999995 %
+        someusername   bot     99.999995 %
+        someusername   bot     99.760059 %
 
 ## License
 
