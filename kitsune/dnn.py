@@ -4,7 +4,7 @@ import tensorflow as tf
 def build_for(X, Y, optimizer='adam'):
     n_inputs       = X.shape[1]
     n_outputs      = Y.shape[1]
-    dropout        = 0.2
+    dropout        = 0.1
 
     print("building neural network for: inputs=%d outputs=%d" % (n_inputs, n_outputs))
 

@@ -13,10 +13,15 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("--dataset", help="Dataset CSV file.", default='dataset.csv')
 parser.add_argument("--output", help="Output model file.", default='model.h5')
+parser.add_argument("--epochs", help="Epochs to train for.", type=int, default=200)
 
 args = parser.parse_args()
 
 (datamin, datamax, dataset) = data.load(args.dataset)
+
+output_path = os.path.dirname(args.output)
+
+data.save_normalizer(os.path.join(output_path, "norm.json"), datamin, datamax)
 
 feature_names = list(dataset.columns)
 feature_names.remove('label')
@@ -35,23 +40,34 @@ model.summary()
 
 print("training model ...")
 
-earlystop_cb = tf.keras.callbacks.EarlyStopping(monitor = 'val_binary_accuracy', min_delta=0.000001, patience = 15, mode = 'auto')
+checkpoint_cb = tf.keras.callbacks.ModelCheckpoint(
+    filepath=args.output,
+    verbose=True,
+    monitor='val_binary_accuracy',
+    mode='max',
+    save_best_only=True)
 
 history = model.fit( X_train, Y_train,
         validation_data = (X_val, Y_val),
         batch_size = 16,
-        epochs = 100,
-        verbose = 2,
-        callbacks=[earlystop_cb])
+        epochs = args.epochs,
+        verbose = 1,
+        callbacks=[checkpoint_cb])
 
 print()
 
-print("saving model to %s ..." % args.output)
+print("model saved to %s ..." % args.output)
 
-output_path = os.path.dirname(args.output)
-model.save(args.output)
-data.save_normalizer(os.path.join(output_path, "norm.json"), datamin, datamax)
+print("running on %d test samples ..." % X_test.shape[0])
 
+metrics = model.evaluate(X_test,  Y_test, verbose=0)
+metrics_names = ['loss', 'binary_crossentropy', 'bin_accuracy']
+print()
+
+for i in range(len(metrics)):
+    print("%20s : %f" % (metrics_names[i], metrics[i]))
+
+"""
 print("running differential evaluation on %d features ..." % len(feature_names))
 
 # baseline
@@ -90,3 +106,4 @@ for feature_name, deltas in by_feature.items():
 
 with open(os.path.join(output_path, 'relevances.json'), 'w+t') as fp:
     json.dump(by_feature, fp, indent=2, sort_keys=True)
+"""    
