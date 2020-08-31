@@ -10,7 +10,20 @@ def build_for(X, Y, optimizer='adam'):
 
     tf.keras.backend.set_floatx('float64')
 
+    """
+    if i try to do this, for some freaking reason i get 0.5 accuracy
+    during training ... i am doing something wrong ... what?
+
+    ref. https://www.tensorflow.org/api_docs/python/tf/keras/layers/experimental/preprocessing/Normalization
+
+    norm = tf.keras.layers.experimental.preprocessing.Normalization()
+    norm.adapt(X.to_numpy())
+    norm.trainable = False 
+    """
+    
     model = tf.keras.Sequential([
+        # norm,
+
         tf.keras.layers.Input(shape=(n_inputs,), dtype=np.float64, name='input'),
 
         tf.keras.layers.Dense(units=256, activation='relu', name='hidden_0'),
