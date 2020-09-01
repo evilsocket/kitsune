@@ -60,6 +60,9 @@ for screen_name, data in users.items():
     #if not is_bot(screen_name, predictions):
     #    continue
 
+    if screen_name not in predictions:
+        continue
+
     num_retweets = len(retweets)
     counters     = collections.Counter()
 
@@ -77,7 +80,7 @@ G = nx.MultiDiGraph()
 
 for edge, weight in edges.items():
     left, right = edge
-    if weight >= 0.2:
+    if weight >= 0.4:
         G.add_edge( left, right, weight = weight)
 
 pos = nx.spring_layout(G)
