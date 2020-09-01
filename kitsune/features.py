@@ -62,7 +62,7 @@ def safe_one_hot(profile, field):
     else:
         return 0.0
 
-def metrics_for_statuses(profile_id, statuses, status_metrics=False, rt_metrics=False, reply_metrics=False):
+def statuses_metrics(profile_id, statuses, status_metrics=False, rt_metrics=False, reply_metrics=False):
     num_statuses = len(statuses)
     avg_entropy = 0
     min_entropy = 999999
@@ -271,7 +271,6 @@ def place_metrics(user_statuses):
         tot_statuses_with_place / total
     ] + tops
 
-
 def extract(profile, tweets, replies, retweets):
     all_statuses = tweets + replies + retweets
     user_statuses = tweets + replies
@@ -370,12 +369,12 @@ def extract(profile, tweets, replies, retweets):
     # process tweets
     ( features['min_tweet_length'],  features['avg_tweet_length'], features['max_tweet_length'], \
       features['min_tweet_entropy'], features['avg_tweet_entropy'] , features['max_tweet_entropy'], \
-      features['avg_retweet_count'], features['avg_favorite_count'] ) = metrics_for_statuses(profile['id'], tweets, status_metrics=True)
+      features['avg_retweet_count'], features['avg_favorite_count'] ) = statuses_metrics(profile['id'], tweets, status_metrics=True)
 
     # process retweets
     (features['min_retweet_length'], features['avg_retweet_length'], features['max_retweet_length'], \
     features['min_retweet_entropy'] , features['avg_retweet_entropy'], features['max_retweet_entropy'], \
-    features['retweets_average_reaction_time'], num_self_retweets, retweed_users ) = metrics_for_statuses(profile['id'], retweets, rt_metrics=True)
+    features['retweets_average_reaction_time'], num_self_retweets, retweed_users ) = statuses_metrics(profile['id'], retweets, rt_metrics=True)
 
     features['retweets_count'] = num_retweets
     features['retweets_to_tweets_ratio'] = ratio( num_retweets, profile['statuses_count'] )
@@ -396,7 +395,7 @@ def extract(profile, tweets, replies, retweets):
     # process replies
     (features['min_reply_length'], features['avg_reply_length'] , features['max_reply_length'] , \
     num_self_replies, 
-    features['min_reply_entropy'], features['avg_reply_entropy'], features['max_reply_entropy']  ) = metrics_for_statuses(profile['id'], replies, reply_metrics=True)
+    features['min_reply_entropy'], features['avg_reply_entropy'], features['max_reply_entropy']  ) = statuses_metrics(profile['id'], replies, reply_metrics=True)
 
     features['replies_count'] = num_replies
     features['replies_to_tweets_ratio'] = ratio( num_replies, profile['statuses_count'] )

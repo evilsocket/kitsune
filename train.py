@@ -14,6 +14,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--dataset", help="Dataset CSV file.", default='dataset.csv')
 parser.add_argument("--output", help="Output model file.", default='model.h5')
 parser.add_argument("--epochs", help="Epochs to train for.", type=int, default=200)
+parser.add_argument("--batch_size", help="Batch size.", type=int, default=64)
 
 args = parser.parse_args()
 
@@ -34,7 +35,7 @@ print("bots:%d legit:%d" % (pos, neg))
 
 X_train, Y_train, X_test, Y_test, X_val, Y_val = data.split(dataset, p_test=0.15, p_val=0.15)
 
-model = dnn.build_for(X_train, Y_train)
+model = dnn.build_for(X_train, Y_train, args.epochs)
 
 model.summary()
 
@@ -49,7 +50,7 @@ checkpoint_cb = tf.keras.callbacks.ModelCheckpoint(
 
 history = model.fit( X_train, Y_train,
         validation_data = (X_val, Y_val),
-        batch_size = 16,
+        batch_size = args.batch_size,
         epochs = args.epochs,
         verbose = 1,
         callbacks=[checkpoint_cb])

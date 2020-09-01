@@ -14,18 +14,21 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("--model", help="Trained model file.", default='model.h5')
 parser.add_argument("--profile", help="Profile path to classify, or folder containing moltiple profiles.", required=True)
+parser.add_argument("--only", help="Only print profiles matching this label.")
 
 args = parser.parse_args()
 
-def print_pred(screen_name, prediction):
+def print_pred(args, screen_name, prediction):
     if prediction[0] > prediction[1]:
         label = 'legit'
         confidence = prediction[0]
-        print("%20s   legit   %f %%" % (screen_name, prediction[0] * 100.0))
+        if args.only in (label, None):
+            print("%20s   legit   %f %%" % (screen_name, prediction[0] * 100.0))
     else:
         label = 'bot'
         confidence = prediction[1]
-        print("%20s   bot     %f %%" % (screen_name, prediction[1] * 100.0))
+        if args.only in (label, None):
+            print("%20s   bot     %f %%" % (screen_name, prediction[1] * 100.0))
 
     return (label, confidence * 100.0)
 
@@ -87,7 +90,7 @@ with open(output_file, 'w+t', newline='') as fp:
         vector = data.nomalized_from_dict(norm, vector)
         prediction = model.predict(vector)[0]
         
-        (label, confidence) = print_pred(user['screen_name'], prediction)
+        (label, confidence) = print_pred(args, user['screen_name'], prediction)
 
         w.writerow([user['id'], user['screen_name'], label, confidence])
         """
