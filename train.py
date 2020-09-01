@@ -7,13 +7,14 @@ import pandas as pd
 import tensorflow as tf
 
 import kitsune.data as data
+import kitsune.features as features
 import kitsune.dnn as dnn
 
 parser = argparse.ArgumentParser()
 
 parser.add_argument("--dataset", help="Dataset CSV file.", default='dataset.csv')
 parser.add_argument("--output", help="Output model file.", default='model.h5')
-parser.add_argument("--epochs", help="Epochs to train for.", type=int, default=200)
+parser.add_argument("--epochs", help="Epochs to train for.", type=int, default=100)
 
 args = parser.parse_args()
 
@@ -21,12 +22,12 @@ args = parser.parse_args()
 
 output_path = os.path.dirname(args.output)
 
+with open(os.path.join(output_path, "symbols.json"), 'rt') as fp:
+    features.symbols = json.load(fp)
+
 data.save_normalizer(os.path.join(output_path, "norm.json"), datamin, datamax)
 
-feature_names = list(dataset.columns)
-feature_names.remove('label')
-
-print("data shape: %s (%d features)" % (str(dataset.shape), len(feature_names)))
+print("data shape: %s" % (str(dataset.shape)))
 
 neg, pos = np.bincount(dataset['label'])
 
@@ -38,6 +39,15 @@ model = dnn.build_for(X_train, Y_train)
 
 model.summary()
 
+tf.keras.utils.plot_model(
+    model,
+    to_file=os.path.join(output_path, "model.png"),
+    show_layer_names=True,
+    rankdir="TB",
+    expand_nested=False,
+    dpi=96,
+)
+
 print("training model ...")
 
 checkpoint_cb = tf.keras.callbacks.ModelCheckpoint(
@@ -47,8 +57,13 @@ checkpoint_cb = tf.keras.callbacks.ModelCheckpoint(
     mode='max',
     save_best_only=True)
 
-history = model.fit( X_train, Y_train,
-        validation_data = (X_val, Y_val),
+history = model.fit( 
+        data.reshape_x(X_train),
+        Y_train,
+        validation_data = (
+            data.reshape_x(X_val), 
+            Y_val
+        ),
         batch_size = 16,
         epochs = args.epochs,
         verbose = 1,
@@ -62,7 +77,7 @@ print("running on %d test samples ..." % X_test.shape[0])
 
 # reload with the best snapshot
 model = tf.keras.models.load_model(args.output)
-metrics = model.evaluate(X_test,  Y_test, verbose=0)
+metrics = model.evaluate(reshape_x(X_test),  Y_test, verbose=0)
 metrics_names = ['loss', 'binary_crossentropy', 'bin_accuracy']
 print()
 

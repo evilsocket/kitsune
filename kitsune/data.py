@@ -1,6 +1,9 @@
 import pandas as pd
+import numpy as np
 import tensorflow as tf
 import json
+
+import kitsune.features as features
 
 def load(filename, normalize=True):
     print("normalizing dataset ...")
@@ -9,17 +12,44 @@ def load(filename, normalize=True):
     
     # convert labels to numbers
     dataset['label'] = dataset['label'].apply(lambda x: 1.0 if x == 'bot' else 0.0)
+    # split the description column into its own tensor
+    dataset['description'] = dataset['description'].apply(lambda x: [int(idx) for idx in x.split(features.SYMBOLS_GLUE)])
     # drop unrequired columns
     dataset = dataset.drop(columns=['user_id','user_screen_name'], axis = 1)
 
-    if normalize:    
+    if normalize:
+        normalized_features_names = [c for c in dataset.columns.tolist() if c != 'description' and c != 'label']
+
+        labels              = dataset[['label']]
+        normalized_features = dataset[normalized_features_names]
+        descriptions        = dataset[['description']]
+
         # normalization
-        data_min = dataset.min()
-        data_max = dataset.max()
+        data_min = normalized_features.min()
+        data_max = normalized_features.max()
 
-        dataset = ((dataset - data_min) / (data_max - data_min)).fillna(0.0)
+        normalized_features = ((normalized_features - data_min) / (data_max - data_min)).fillna(0.0)
 
-        return (data_min, data_max, dataset)
+        rows = []
+        for i, label in enumerate(labels.values):
+            rows.append({
+                'label': label[0], 
+                'normalized_features': normalized_features.values[i], 
+                'encoded_description': descriptions.values[i][0]
+            })
+
+        matrix = pd.DataFrame(rows)
+        # print(matrix)
+
+        #print(len(normalized_features))
+        #print(len(descriptions))
+        #print(len(dataset['label']))
+        #quit()
+
+        #test = dataset['label'].join(pd.DataFrame( [[0.0] * 197] * len(descriptions))
+        #test = test.join(descriptions)
+
+        return (data_min, data_max, matrix)
     else:
         return dataset
 
@@ -53,14 +83,21 @@ def split(dataset, p_test, p_val):
 
     return (X_train, Y_train, X_test, Y_test, X_val, Y_val)
 
+def reshape_x(x):
+    normalized_features = []
+    encoded_description = []
+
+    for (rown, row) in x.iterrows():
+        normalized_features.append(row['normalized_features']) 
+        encoded_description.append(row['encoded_description'])
+
+    return [np.array(normalized_features), np.array(encoded_description)]
+
 def save_normalizer(filename, datamin, datamax):
     print("saving normalizing values to %s ..." % filename)
 
     datamin = datamin.to_dict()
     datamax = datamax.to_dict()
-
-    del datamin['label']
-    del datamax['label']
 
     with open(filename, 'w+t') as fp:
         json.dump({

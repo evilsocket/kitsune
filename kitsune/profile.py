@@ -26,46 +26,52 @@ def load(profile_path, limit=200, quiet=False, extract_features_vector=True):
         replies  = []
         retweets = []
 
-        tweet_files = list(glob.glob(os.path.join(tweets_path, "*_*.json")))
-        tweet_files.sort(key = lambda x: x.split('_').pop(), reverse=True)
+        if limit > 0:
+            tweet_files = list(glob.glob(os.path.join(tweets_path, "*_*.json")))
+            tweet_files.sort(key = lambda x: x.split('_').pop(), reverse=True)
 
-        for filename in tweet_files:
+            for filename in tweet_files:
+                num_tweets = len(tweets)
+                num_replies = len(replies)
+                num_retweets = len(retweets)
+                num_total = num_tweets + num_replies + num_retweets
+
+                if num_total >= limit:
+                    break
+
+                with open(filename, 'rt') as fp:
+                    tweet = json.load(fp)
+
+                    if 'retweeted_status' in tweet and tweet['retweeted_status'] is not None:
+                        retweets.append(tweet)
+                    elif 'in_reply_to_status_id' in tweet and tweet['in_reply_to_status_id'] is not None:
+                        replies.append(tweet)
+                    else:
+                        tweets.append(tweet)
+
             num_tweets = len(tweets)
             num_replies = len(replies)
             num_retweets = len(retweets)
             num_total = num_tweets + num_replies + num_retweets
+            if num_total == 0:
+                # print("%s does not have tweets, skipping" % tweets_path)
+                return None
 
-            if num_total == limit:
-                break
+            data = (profile, tweets, replies, retweets)
+            vector = None
 
-            with open(filename, 'rt') as fp:
-                tweet = json.load(fp)
-
-                if 'retweeted_status' in tweet and tweet['retweeted_status'] is not None:
-                    retweets.append(tweet)
-                elif 'in_reply_to_status_id' in tweet and tweet['in_reply_to_status_id'] is not None:
-                    replies.append(tweet)
-                else:
-                    tweets.append(tweet)
-
-        num_tweets = len(tweets)
-        num_replies = len(replies)
-        num_retweets = len(retweets)
-        num_total = num_tweets + num_replies + num_retweets
-        if num_total == 0:
-            # print("%s does not have tweets, skipping" % tweets_path)
-            return None
-
-        data = (profile, tweets, replies, retweets)
-        vector = None
-
-        if extract_features_vector:
+            if extract_features_vector:
+                if not quiet:
+                    print("vectorializing %s : %d tweets, %d replies, %d retweets" % (profile_path, num_tweets, num_replies, num_retweets))        
+                vector = features.extract(profile, tweets, replies, retweets)
+            elif not quiet:
+                print("loaded %s : %d tweets, %d replies, %d retweets" % (profile_path, num_tweets, num_replies, num_retweets))        
+        else:
+            data = (profile, [], [], [])
+            vector = None
             if not quiet:
-                print("vectorializing %s : %d tweets, %d replies, %d retweets" % (profile_path, num_tweets, num_replies, num_retweets))        
-            vector = features.extract(profile, tweets, replies, retweets)
-        elif not quiet:
-            print("loaded %s : %d tweets, %d replies, %d retweets" % (profile_path, num_tweets, num_replies, num_retweets))        
- 
+                print("loaded %s" % profile_path)        
+    
         return (data, vector)
 
     except Exception as e:

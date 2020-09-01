@@ -7,6 +7,14 @@ from email.utils import parsedate
 from collections import Counter, OrderedDict
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+symbols               = None
+MAX_DICTIONARY_SIZE   = 4096
+MAX_SYMBOLS_IN_PHRASE = 100
+MIN_SYMBOL_LENGTH     = 4
+PADDING_SYMBOL_ID     = 0
+UNKNOWN_SYMBOL_ID     = 1
+SYMBOLS_GLUE          = '#'
+
 today = datetime.today()
 
 EMOJI_RE                   = re.compile('[\U00010000-\U0010ffff]', flags=re.UNICODE)
@@ -145,6 +153,46 @@ def metrics_for_statuses(profile_id, statuses, status_metrics=False, rt_metrics=
 
     return metrics
 
+def normalize_text(text, remove_mentions=True, remove_urls=True, remove_numbers=True):
+    if remove_mentions:
+        text = re.sub(r'@\w+', '', text)
+
+    text = text.strip().replace('\n', ' ').lower()
+
+    if remove_urls:
+        text = re.sub(r'https?:\/\/.*[\r\n]*', '', text, flags=re.MULTILINE)
+
+    if remove_numbers:
+        text = re.sub(r'\d+', '', text)
+ 
+    return text
+
+def tokenize_text(text, remove_mentions=True, remove_urls=True, remove_numbers=True):
+    if text is None:
+        return []
+
+    text = normalize_text(text, remove_mentions=remove_mentions, remove_urls=remove_urls, remove_numbers=remove_numbers)
+    return list(re.findall(r'\w+', text))
+
+def get_corpus_dictionary(corpus):
+    global symbols
+
+    dictionary = Counter()
+
+    for phrase in corpus:
+
+        tokens = [t for t in tokenize_text(phrase) if len(t) >= MIN_SYMBOL_LENGTH] 
+        dictionary.update(tokens)
+
+    symbols = [sym for _, (sym,count) in enumerate(dictionary.most_common(MAX_DICTIONARY_SIZE))]
+    symbols.sort()
+
+    # 0: padding
+    # 1: unknown
+    symbols = { sym : idx + 2 for idx, sym in enumerate(symbols)}
+
+    return symbols
+
 # ref. https://stackoverflow.com/questions/8897593/how-to-compute-the-similarity-between-two-text-documents  
 def duplicates_metrics(statuses):
     duplicates = 0
@@ -153,12 +201,7 @@ def duplicates_metrics(statuses):
     corpus = []   
 
     for r in statuses:
-        text = r['text']
-        # remove mentions, newlines and make lowercase
-        text = re.sub(r'@\w+', '', text).strip().replace('\n', ' ').lower()
-        # remove urls   
-        text = re.sub(r'https?:\/\/.*[\r\n]*', '', text, flags=re.MULTILINE)
-        corpus.append(text)
+         corpus.append(normalize_text(r['text']))
 
     if len(corpus) > 1 and group_size > 0:
         try:
@@ -407,5 +450,17 @@ def extract(profile, tweets, replies, retweets):
     features.update( temporal_distribution('tweets', tweets) )
     features.update( temporal_distribution('replies', replies) )
     features.update( temporal_distribution('retweets', retweets) )
+
+    # if symbols dictionary has been created, transform the profile
+    # description in a vector of symbol indexes where:
+    # 0: <PADDING>
+    # 1: <UNKNOWN>
+    # 2+: symbold id
+    if symbols is not None:
+        tokens = tokenize_text(profile['description'])
+        tokens = [ symbols.get(sym, UNKNOWN_SYMBOL_ID) if len(sym) >= MIN_SYMBOL_LENGTH 
+        else PADDING_SYMBOL_ID for sym in tokens ]
+        tokens += [PADDING_SYMBOL_ID] * (MAX_SYMBOLS_IN_PHRASE - len(tokens))
+        features['description'] = SYMBOLS_GLUE.join(map(str, tokens))
 
     return features
