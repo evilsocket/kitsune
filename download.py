@@ -92,8 +92,11 @@ for username in usernames:
 
             user_done = True
         except tweepy.TweepError as e:
-            if e.api_code == 50 or e.api_code == 63: # user not found or suspended
+             # user not found or suspended: 
+            if 'status code = 401' in str(e) or 'status code = 404' in str(e) or e.api_code == 50 or e.api_code == 63:
+                print(e)
                 user_done = True
+                break
             else:
                 print("sleeping for %d seconds (%s)" % (args.delay, e))
                 time.sleep(args.delay)
