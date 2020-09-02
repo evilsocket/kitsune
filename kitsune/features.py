@@ -31,15 +31,26 @@ def entropy(string):
 def temporal_distribution(prefix, statuses):
     features = OrderedDict()
 
+    num_statuses = len(statuses)
     by_hour = Counter({i : 0 for i in range(0, 24)})
     by_week_day = Counter({i : 0 for i in range(0, 7)})
     by_month = Counter({i : 0 for i in range(1, 13)})
 
+    prev = None
+    avg_delta_t = 0
+
     for status in statuses:
         parsed = parse_date(status['created_at'])
+
+        if prev is not None:
+            avg_delta_t += (parsed - prev).total_seconds()
+
+        prev = parsed
         by_hour[parsed.hour] += 1
         by_week_day[parsed.weekday()] += 1
-        by_month[parsed.month] +=1
+        by_month[parsed.month] += 1
+
+    features['%s_avg_delta_t' % prefix] = (avg_delta_t / num_statuses) if num_statuses > 0 else 0.0
 
     values = []
     for hour in range(0, 24):
@@ -65,11 +76,11 @@ def safe_one_hot(profile, field):
 def statuses_metrics(profile_id, statuses, status_metrics=False, rt_metrics=False, reply_metrics=False):
     num_statuses = len(statuses)
     avg_entropy = 0
-    min_entropy = 999999
+    min_entropy = 0
     max_entropy = 0
 
     avg_length = 0
-    min_length = 999999
+    min_length = 0
     max_length = 0
 
     avg_retweet_count = 0
@@ -86,7 +97,7 @@ def statuses_metrics(profile_id, statuses, status_metrics=False, rt_metrics=Fals
         # size metrics
         text_size = len(status['text'])
         avg_length += text_size
-        if text_size < min_length:
+        if min_length == 0 or text_size < min_length:
             min_length = text_size
         if text_size > max_length:
             max_length = text_size
@@ -94,7 +105,7 @@ def statuses_metrics(profile_id, statuses, status_metrics=False, rt_metrics=Fals
         # shannon entropy metrics
         text_entropy = entropy(status['text'])
         avg_entropy += text_entropy
-        if text_entropy < min_entropy:
+        if min_entropy == 0 or text_entropy < min_entropy:
             min_entropy = text_entropy
         if text_entropy > max_entropy:
             max_entropy = text_entropy
@@ -109,7 +120,7 @@ def statuses_metrics(profile_id, statuses, status_metrics=False, rt_metrics=Fals
             # collect retweet reaction times
             created_at = parse_date(status['retweeted_status']['created_at'])
             retweeted_at = parse_date(status['created_at'])
-            rt_avg_reaction_time += (retweeted_at - created_at).seconds
+            rt_avg_reaction_time += (retweeted_at - created_at).total_seconds()
             num_rts += 1
 
             # collect retweeted users
@@ -274,6 +285,14 @@ def place_metrics(user_statuses):
 def extract(profile, tweets, replies, retweets):
     all_statuses = tweets + replies + retweets
     user_statuses = tweets + replies
+
+    # make sure they're properly sorted
+    tweets.sort(key=lambda x: parse_date(x['created_at']))
+    replies.sort(key=lambda x: parse_date(x['created_at'])) 
+    retweets.sort(key=lambda x: parse_date(x['created_at']))
+    all_statuses.sort(key=lambda x: parse_date(x['created_at']))
+    user_statuses.sort(key=lambda x: parse_date(x['created_at']))
+
     num_tweets = len(tweets)
     num_replies = len(replies)
     num_retweets = len(retweets)
