@@ -69,7 +69,7 @@ This will start the training, print accuracy metrics and save the model, normali
     ...
     79/79 - 0s - loss: 0.0130 - binary_crossentropy: 0.0130 - binary_accuracy: 0.9960 - val_loss: 0.0627 - val_binary_crossentropy: 0.0627 - val_binary_accuracy: 0.9777
 
-To test the model predictions on a profile folder or multiple folders at once:
+To test the model predictions on a profile folder (that you will need to download with `download.py` as explained for the dataset creation) or multiple folders at once:
 
      /path/to/kitsune/test.py \
         --model /path/to/model.h5 \
