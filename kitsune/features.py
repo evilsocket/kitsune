@@ -4,6 +4,7 @@ import re
 import numpy as np
 from datetime import datetime
 from email.utils import parsedate
+from urllib.parse import urlparse, ParseResult
 from collections import Counter, OrderedDict
 from sklearn.feature_extraction.text import TfidfVectorizer
 
@@ -244,6 +245,46 @@ def source_metrics(user_statuses):
         windows / total,
         non_std / total)
 
+def urls_metrics(user_statuses):
+    unique_urls = Counter()
+    unique_domains = Counter()
+    num_http_scheme = 0
+    num_https_scheme = 0
+    num_other_scheme = 0
+    num_statuses_with_urls = 0
+    num_not_parsable = 0
+
+    for s in user_statuses:
+        if len(s['entities']['urls']) > 0:
+            num_statuses_with_urls += 1
+            for url in s['entities']['urls']:
+                url = url['expanded_url'].lower()
+                try:
+                    unique_urls.update([url])
+                    url = urlparse(url)
+                    unique_domains.update([url.netloc])
+
+                    if url.scheme == 'http':
+                        num_http_scheme += 1
+                    elif url.scheme == 'https':
+                        num_https_scheme += 1
+                    else:
+                        num_other_scheme += 1
+
+                except:
+                    num_not_parsable += 1
+
+    top3 = unique_urls.most_common(3)
+    ntop = len(top3)
+    tops = [0.0, 0.0, 0.0]
+
+    for i in range(ntop):
+        tops[i] = top3[i][1]
+
+    return [ len(unique_urls), len(unique_domains), 
+             num_statuses_with_urls, num_not_parsable,
+             num_http_scheme, num_https_scheme, num_other_scheme ] + tops
+
 def emoji_metrics(user_statuses):
     total = len(user_statuses)
     if total == 0:
@@ -304,11 +345,11 @@ def extract(profile, tweets, replies, retweets):
 
     features = OrderedDict()
     
-    # TODO: urls stats
+    # TODO: media stats
 
     # profile data
     features['user_id'] = profile['id']
-    
+
     features['user_screen_name'] = profile['screen_name'].lower()
     features['user_screen_name_length'] = len(features['user_screen_name'])
     features['user_screen_name_entropy'] = entropy(features['user_screen_name'])
@@ -373,6 +414,12 @@ def extract(profile, tweets, replies, retweets):
       features['source_websites_ratio'],
       features['source_windows_ratio'],
       features['source_non_std_ratio'] ) = source_metrics(user_statuses)
+
+    # URLs
+    ( features['unique_urls'], features['unique_domains'], 
+      features['statuses_with_urls'], features['not_parsable'],
+      features['http_scheme'], features['https_scheme'], features['other_scheme'],
+      features['top1_url_count'], features['top2_url_count'], features['top3_url_count'] ) = urls_metrics(user_statuses)
 
     # emojis
     ( features['unique_emojis'], features['emoji_ratio'] ) = emoji_metrics(user_statuses) 

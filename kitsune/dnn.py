@@ -1,12 +1,9 @@
 import numpy as np
 import tensorflow as tf
 
-def build_for(X, Y, epochs):
+def build_for(X, Y, epochs, num_hidden_layers=5, size_first_hidden=512, dropout=0.3, learning_rate=0.1, momentum=0.8):
     n_inputs       = X.shape[1]
     n_outputs      = Y.shape[1]
-    dropout        = 0.3
-
-    print("building neural network for: inputs=%d outputs=%d" % (n_inputs, n_outputs))
 
     """
     if i try to do this, for some freaking reason i get 0.5 accuracy
@@ -22,28 +19,22 @@ def build_for(X, Y, epochs):
     """
 
     normalized_features_input = tf.keras.layers.Input(shape=(n_inputs,), name='normalized_features_input')
+    x = normalized_features_input
+    size = size_first_hidden
 
-    x = tf.keras.layers.Dense(units=512, activation='relu')(normalized_features_input)
-    x = tf.keras.layers.Dropout(dropout)(x)
-
-    x = tf.keras.layers.Dense(units=256, activation='relu')(normalized_features_input)
-    x = tf.keras.layers.Dropout(dropout)(x)
-
-    x = tf.keras.layers.Dense(units=128, activation='relu')(x)
-    x = tf.keras.layers.Dropout(dropout)(x) 
-    
-    x = tf.keras.layers.Dense(units=64, activation='relu')(x)
-    x = tf.keras.layers.Dropout(dropout)(x) 
+    for i in range(num_hidden_layers):
+        x = tf.keras.layers.Dense(units=size, activation='relu')(x)
+        x = tf.keras.layers.Dropout(dropout)(x)
+        size /= 2
+        if size < 16:
+            break
 
     normalized_features_output = tf.keras.layers.Dense(units=n_outputs, activation='softmax')(x)
 
     model = tf.keras.Model(inputs=[normalized_features_input],
                            outputs=[normalized_features_output])
 
-    learning_rate = 0.1
     decay_rate = learning_rate / epochs
-    momentum = 0.8
-
     optimizer = tf.keras.optimizers.SGD(lr=learning_rate, momentum=momentum, decay=decay_rate, nesterov=False)
     loss      = 'binary_crossentropy'
     metrics   = [ tf.keras.metrics.binary_crossentropy, tf.keras.metrics.binary_accuracy ]

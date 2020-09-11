@@ -55,7 +55,7 @@ base_path = os.path.dirname(args.model)
 norm = data.load_normalizer(os.path.join(base_path, 'norm.json'))
 model = tf.keras.models.load_model(args.model)
 
-# model.summary()
+model.summary()
 
 profile_file = os.path.join(args.profile, 'profile.json')
 output_file  = os.path.join(args.profile, 'predictions.csv')
