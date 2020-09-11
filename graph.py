@@ -2,6 +2,7 @@
 import sys
 import os
 import glob
+import argparse
 import csv
 import pandas as pd
 import multiprocessing as mp
@@ -28,14 +29,16 @@ def node_color(user_name, predictions):
 def is_bot(user_name, predictions):
     return user_name in predictions and predictions[user_name][0] == 'bot'
 
-if len(sys.argv) < 2:
-    print("usage: %s <profile path>" % sys.argv[0])
-    quit()
+parser = argparse.ArgumentParser()
 
-profile_path = sys.argv[1]
-profile_paths = list(glob.glob(os.path.join(profile_path, "*")))
-predictions_file = os.path.join(profile_path, 'predictions.csv')
-graph_file = os.path.join(profile_path, 'graph.gml')
+parser.add_argument("--path", help="Folder containing the profiles sub folders and predictions.csv file.", required=True)
+parser.add_argument("--min-weight", help="Minimum weight for an edge to be added to the graph.", type=float, default=0.1)
+
+args = parser.parse_args()
+
+profile_paths = list(glob.glob(os.path.join(args.path, "*")))
+predictions_file = os.path.join(args.path, 'predictions.csv')
+graph_file = os.path.join(args.path, 'graph.gml')
 predictions = {}
 known_only = False
 
@@ -80,7 +83,7 @@ G = nx.MultiDiGraph()
 
 for edge, weight in edges.items():
     left, right = edge
-    if weight >= 0.4:
+    if weight >= args.min_weight:
         G.add_edge( left, right, weight = weight)
 
 pos = nx.spring_layout(G)
@@ -89,9 +92,7 @@ for node, coords in pos.items():
     pos_labels[node] = (coords[0] + 0.01, coords[1])
 
 
-min_size = 50
-max_size = 1000
-w_threshold = 0.3
+w_threshold = args.min_weight * 3
 
 elarge = [(u, v) for (u, v, d) in G.edges(data=True) if d['weight'] >= w_threshold]
 esmall = [(u, v) for (u, v, d) in G.edges(data=True) if d['weight'] < w_threshold]     
