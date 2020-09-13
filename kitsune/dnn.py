@@ -24,7 +24,8 @@ def build_for(X, Y, epochs, num_hidden_layers=5, size_first_hidden=512, dropout=
 
     for i in range(num_hidden_layers):
         x = tf.keras.layers.Dense(units=size, activation='relu')(x)
-        x = tf.keras.layers.Dropout(dropout)(x)
+        if dropout > 0.0:
+            x = tf.keras.layers.Dropout(dropout)(x)
         size /= 2
         if size < 16:
             break

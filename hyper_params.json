@@ -1,7 +1,7 @@
 {
-	"num_hidden_layers": 2,
-	"size_first_hidden": 128,
-	"dropout": 0.1,
-	"learning_rate": 0.2,
-	"momentum": 0.6
+    "dropout": 0.0,
+    "learning_rate": 0.2,
+    "momentum": 0.6,
+    "num_hidden_layers": 6,
+    "size_first_hidden": 64
 }

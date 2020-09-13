@@ -40,9 +40,9 @@ X_train, Y_train, X_test, Y_test, X_val, Y_val = data.split(dataset, p_test=0.15
 grid_search = args.params is None
 if grid_search:
     h_params = { 
-        'num_hidden_layers': [5, 4, 3, 2, 1],
+        'num_hidden_layers': [6, 5, 4, 3, 2, 1],
         'size_first_hidden': [512, 256, 128, 64],
-        'dropout': [0.1, 0.2, 0.3], 
+        'dropout': [0.0, 0.1, 0.2, 0.3], 
         'learning_rate': [0.1, 0.2],
         'momentum': [0.8, 0.7, 0.6]
     }
@@ -105,44 +105,43 @@ if grid_search:
         json.dump(best_params, fp, indent=4, sort_keys=True)
     print("optimal hyper parameters saved to %s" % params_file)
 
-quit()
+else:
+    print("running differential evaluation on %d features ..." % len(feature_names))
 
-print("running differential evaluation on %d features ..." % len(feature_names))
+    # baseline
 
-# baseline
+    ref_metrics = best_model.evaluate(X_test,  Y_test, verbose=0)
+    ref_metrics_names = ['loss', 'binary_crossentropy', 'bin_accuracy']
+    sort_metric = 'bin_accuracy'
+    by_feature = {}
 
-ref_metrics = model.evaluate(X_test,  Y_test, verbose=0)
-ref_metrics_names = ['loss', 'binary_crossentropy', 'bin_accuracy']
-sort_metric = 'bin_accuracy'
-by_feature = {}
+    for feature_name in feature_names:
+        print("testing feature %s ..." % feature_name)
 
-for feature_name in feature_names:
-    print("testing feature %s ..." % feature_name)
+        X_test_run = X_test.copy()
+        X_test_run[feature_name] = 0.0
 
-    X_test_run = X_test.copy()
-    X_test_run[feature_name] = 0.0
+        metrics = best_model.evaluate(X_test_run,  Y_test, verbose=0)
+        deltas  = {}
 
-    metrics = model.evaluate(X_test_run,  Y_test, verbose=0)
-    deltas  = {}
+        for metric_index, metric_name in enumerate(ref_metrics_names):
+            deltas[metric_name] = metrics[metric_index] - ref_metrics[metric_index]
+        
+        by_feature[feature_name] = deltas
 
-    for metric_index, metric_name in enumerate(ref_metrics_names):
-        deltas[metric_name] = metrics[metric_index] - ref_metrics[metric_index]
-    
-    by_feature[feature_name] = deltas
+    print()
 
-print()
+    by_feature = dict(sorted(by_feature.items(), key=lambda kv: kv[1][sort_metric]))
+    for feature_name, deltas in by_feature.items():
+        delta = deltas[sort_metric]
+        if delta == 0.0:
+            continue
 
-by_feature = dict(sorted(by_feature.items(), key=lambda kv: kv[1][sort_metric]))
-for feature_name, deltas in by_feature.items():
-    delta = deltas[sort_metric]
-    if delta == 0.0:
-        continue
+        if delta < 0:
+            print("ok: %s %f%%" % (feature_name, delta))
+        else:
+            print("ko: %s %f%%" % (feature_name, delta))
 
-    if delta < 0:
-        print("ok: %s %f%%" % (feature_name, delta))
-    else:
-        print("ko: %s %f%%" % (feature_name, delta))
-
-with open(os.path.join(output_path, 'relevances.json'), 'w+t') as fp:
-    json.dump(by_feature, fp, indent=2, sort_keys=True)
+    with open(os.path.join(output_path, 'relevances.json'), 'w+t') as fp:
+        json.dump(by_feature, fp, indent=2, sort_keys=True)
  
