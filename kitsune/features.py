@@ -193,6 +193,34 @@ def duplicates_metrics(statuses):
 
     return (duplicates, duplicates_ratio)
 
+def media_metrics(user_statuses):
+    total = len(user_statuses)
+    num_medias = 0
+    num_statuses_with_media = 0
+    num_photos = 0
+    num_videos = 0
+    num_gifs = 0
+
+    for status in user_statuses:
+        if 'media' in status['entities']:
+            num_statuses_with_media += 1
+            num_medias += len(status['entities']['media'])
+
+            for media in status['entities']['media']:
+                if media['type'] == 'photo':
+                    num_photos += 1
+                elif media['type'] == 'video':
+                    num_videos += 1
+                else:
+                    num_gifs += 1
+
+    return ( 
+        (num_statuses_with_media / total) if total else 0, 
+        (num_medias / total) if total else 0,
+        (num_photos / num_medias) if num_medias else 0,
+        (num_videos / num_medias) if num_medias else 0,
+        (num_gifs / num_medias) if num_medias else 0)
+
 def source_metrics(user_statuses):
     total = len(user_statuses)
     if total == 0:
@@ -344,8 +372,6 @@ def extract(profile, tweets, replies, retweets):
     avg_num_hashtags_per_post = 0
 
     features = OrderedDict()
-    
-    # TODO: media stats
 
     # profile data
     features['user_id'] = profile['id']
@@ -402,6 +428,12 @@ def extract(profile, tweets, replies, retweets):
     features['avg_hashtags_per_post'] = avg_num_hashtags_per_post
     features['hashtags_to_tweets_ratio'] = ratio( features['unique_hashtags'], profile['statuses_count'] ) 
     features['unique_languages'] = len(unique_languages)
+
+    # process medias
+    ( features['statuses_with_media_ratio'], features['num_medias_ratio'],
+      features['photos_media_ratio'], 
+      features['videos_media_ratio'], 
+      features['gifs_media_ratio'] ) = media_metrics(user_statuses)
 
     # process sources   
     ( features['unique_sources'], 
