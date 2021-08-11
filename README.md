@@ -2,15 +2,39 @@
 
 An artificial neural network designed to detect and correlate Twitter profiles with similar behaviours, originally developed to detect automated Twitter accounts (bots), but that can be used for any custom list of accounts.
 
-**! WORK IN PROGRES, STILL IN BETA STAGE !**
-
-## Instructions
+## Requirements
 
 Make sure you have python3 and pip3 installed, then proceed to install the requirements:
 
     cd /path/to/kitsune
     sudo pip3 install -r requirements.txt
-    
+
+## Using the existing model
+
+To test the model predictions on a profile folder (that you will need to download with `download.py` as explained in the training section) or multiple folders at once:
+
+     /path/to/kitsune/test.py \
+        --model /path/to/kitsune/model.h5 \
+        --profile /path/to/profile-data-folder
+
+    writing predictions to /path/to/profile-data-folder/predictions.csv ...
+
+    -------
+
+            screen_name | class | confidence
+
+        someusername   bot     100.000000 %
+        someusername   bot     99.893301 %
+        someusername   bot     99.999895 %
+        someusername   bot     99.993192 %
+        someusername   bot     66.441199 %
+        someusername   bot     99.981043 %
+        someusername   bot     99.999995 %
+        someusername   bot     99.999995 %
+        someusername   bot     99.760059 %
+
+## Training a new model
+
 You'll need to create two folders, in this example we'll create a `bots` folder and a `legit` folder. Place in each one a file named `seed.txt` with the list of accounts you want to be classified in that group, so that you'll have:
 
     /path/to/bots/seed.txt
@@ -68,28 +92,6 @@ This will start the training, print accuracy metrics and save the model, normali
     Epoch 3/100
     ...
     79/79 - 0s - loss: 0.0130 - binary_crossentropy: 0.0130 - binary_accuracy: 0.9960 - val_loss: 0.0627 - val_binary_crossentropy: 0.0627 - val_binary_accuracy: 0.9777
-
-To test the model predictions on a profile folder (that you will need to download with `download.py` as explained for the dataset creation) or multiple folders at once:
-
-     /path/to/kitsune/test.py \
-        --model /path/to/model.h5 \
-        --profile /path/to/profile-data-folder
-
-    writing predictions to /path/to/profile-data-folder/predictions.csv ...
-
-    -------
-
-            screen_name | class | confidence
-
-        someusername   bot     100.000000 %
-        someusername   bot     99.893301 %
-        someusername   bot     99.999895 %
-        someusername   bot     99.993192 %
-        someusername   bot     66.441199 %
-        someusername   bot     99.981043 %
-        someusername   bot     99.999995 %
-        someusername   bot     99.999995 %
-        someusername   bot     99.760059 %
 
 ## License
 
